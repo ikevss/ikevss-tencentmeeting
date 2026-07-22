@@ -42,7 +42,7 @@ triggers:
 # ikevss-tencentmeeting — 腾讯会议 CLI 技能 v1.3
 
 > **基于腾讯会议官方 CLI（@tencentcloud/tmeet v1.0.12），OAuth2 设备码授权，个人和企业账号通用，无需 Token。**
-> **覆盖全部 30 条 CLI 子命令 + 邮件邀请（响应式 HTML + Google Calendar 内嵌链接 + ICS 日历附件保底）。**
+> **覆盖全部 30 条 CLI 子命令 + 邮件邀请（响应式 HTML + ICS 日历附件）。**
 
 **版本**: v1.3 | **最后更新**: 2026-07-22 | **GitHub**: https://github.com/ikevss/ikevss-tencentmeeting
 
@@ -82,7 +82,7 @@ tmeet auth status
 | 通讯录检索（名称/邮箱/电话） | ✅ | ❌ |
 | 会中控制（呼叫/踢人） | ✅ | ❌ |
 | 日志导出 + 反馈上报 | ✅ | ❌ |
-| **邮件邀请（HTML + 内嵌日历链接 + ICS 附件）** | ✅ 🆕 | ❌ |
+| **邮件邀请（HTML + ICS 附件）** | ✅ 🆕 | ❌ |
 | 凭证安全存储 | AES-256-GCM 加密 | Token 明文 |
 | 跨平台 | macOS / Linux / Windows | 取决于 MCP 客户端 |
 
@@ -243,21 +243,14 @@ npx skills add https://agent.qq.com --skill -g -y
 | 品牌色 | 腾讯会议蓝 `#0066FF` / 文字 `#1f2937` / 背景 `#f6f9fc` |
 | 卡片 | 白色背景、圆角 12px、左边框 4px 蓝色竖条 |
 | 按钮 | 蓝色大按钮 `Button href={joinUrl}`，"🔗 一键加入会议" |
-| 日历按钮 | 邮件底部放"📅 添加到日历"按钮组：Google Calendar 链接 + ICS 附件说明 |
+| ICS 提示 | 底部说明 .ics 附件双击即可导入日历，全平台兼容 |
 | Preview | 使用 `<Preview>` 组件设置收件箱预览文字 |
 
-**邮件底部日历按钮规范**（必须包含）：
-
-```
-在 HTML 邮件最底部加一个浅蓝背景的 Section，包含：
-1. "📅 添加到你的日历" 标题
-2. Google Calendar 链接按钮（自动构建：https://calendar.google.com/calendar/render?action=TEMPLATE&text={subject}&dates={utc_start}/{utc_end}&details=会议号:{meeting_code}%0A入会链接:{join_url}&location={join_url}）
-3. "邮件附件中有 .ics 日历文件，适用于 Outlook / Apple Mail / 其他日历，双击即可导入" 文字说明
-```
+**设计说明**：当前 agently-cli 不支持构造 iMIP MIME 结构（text/calendar MIME part），因此无法在邮件中直接渲染"接受/拒绝/暂定"按钮。ICS 作为附件是当前最优方案——收件人双击 .ics 文件即可加入日历，Outlook / Apple Mail / Gmail 全平台兼容。待 agently-cli 支持 raw MIME 后升级为内嵌日程。
 
 ### ICS 日历文件规范
 
-纯文本手写，RFC 5545 标准，不需要任何 npm 包。**ICS 附件作为保底方案**（全平台兼容），与 HTML 中的 Google Calendar 链接共同覆盖所有日历场景。
+纯文本手写，RFC 5545 标准，不需要任何 npm 包。**ICS 附件为当前最优方案**，全平台兼容。
 
 ```
 BEGIN:VCALENDAR
