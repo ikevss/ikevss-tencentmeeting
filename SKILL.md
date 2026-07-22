@@ -39,7 +39,7 @@ triggers:
   - 通知参会人
 ---
 
-# ikevss-tencentmeeting v1.4
+# ikevss-tencentmeeting v1.5
 
 > 基于 `@tencentcloud/tmeet` v1.0.12 · OAuth2 授权 · 个人和企业账号通用 · 30 条 CLI 全覆盖 + 邮件邀请。
 > **与腾讯官方 MCP 方案的核心区别：企业账号也能用。**
@@ -78,37 +78,40 @@ tmeet auth status
 
 ### 创建会议
 
-```
-0. tmeet auth status → 未登录则 tmeet auth login
-1. tmeet 未装 → npm install -g @tencentcloud/tmeet@v1.0.12
-2. 确认参数 → tmeet meeting create → 返回 meeting_code + join_url + meeting_id
-3. 🆕 主动问："需要给参会人发邮件邀请吗？精美响应式邀请函 + 日历附件"
-```
+- 0. `tmeet auth status` → 未登录则 `tmeet auth login`
+- 1. tmeet 未装 → `npm install -g @tencentcloud/tmeet@v1.0.12`
+- 2. 确认参数（主题/时间/时长） → `tmeet meeting create` → 记录 `meeting_code, join_url, meeting_id`
+- 3. 🆕 主动问："需要给参会人发邮件邀请吗？精美响应式邀请函 + 日历附件"
 
 ### 邮件邀请（用户同意后）
 
-```
-1. agently-cli 检查:
-   未装 → npm install -g @tencent-qqmail/agently-cli
-         npx skills add https://agent.qq.com --skill -g -y
-         npm i react-email@latest
-   未授权 → agently-cli auth login
+**首次使用（检测到 agently-cli 未安装或未授权）：**
 
-2. 询问收件人邮箱
+- 安装: `npm install -g @tencent-qqmail/agently-cli@latest`
+- 安装: `npm i react-email@3.0.x`
+- 安装 skill: `npx skills add https://agent.qq.com --skill -g -y`
+- 授权: `agently-cli auth login`
+- 确认: `agently-cli +me` 获取邮箱地址（记为 `organizer_email`）
 
-3. 用 react-email 组件生成 HTML 邮件
-   → docs/邮件邀请-{主题}-{日期}.html
-   → 品牌色 #0066FF, max-width 600px, inline styles
+**每次发送（已安装后的完整流程）：**
 
-4. start "" 打开浏览器预览 → "确认无误后我发送"
+- 1. 询问收件人邮箱
+- 2. 用 react-email 组件生成 HTML 邮件 → `docs/.tmp/邮件邀请-{meeting_id}.html`
+  - 品牌色 `#0066FF`, max-width 600px, 全部 inline styles
+- 3. `start ""` 打开浏览器预览 → "确认无误后我发送"
+- 4. 手写 ICS (RFC 5545, CRLF 换行, UTC 时间) → `docs/.tmp/meeting-{meeting_id}.ics`
+  - `ORGANIZER` 使用 `agently-cli +me` 返回的邮箱
+- 5. agently-cli 两阶段发送 (`--body-file ... --attachment ...`)
+  - 第一阶段 → 拿到 ctk → 记录 `ctk` 和 `date +%s` 时间戳 → 展示摘要 → **停下**
+  - 用户确认后 → 第二阶段（需重新获取 ctk 如已过期）
+  - 错误码按 agently-cli 错误码表处理
 
-5. 手写 ICS (RFC 5545, CRLF 换行, UTC 时间)
-   → meeting.ics → 作为 --attachment
+**半成品交付策略（邮件链路失败时）：**
 
-6. agently-cli 两阶段发送：
-   第一阶段 → 拿到 ctk → 展示摘要 → 停下
-   用户确认后 → 第二阶段 → 完成
-```
+如果邮件发送失败（安装失败/授权失败/发送超时），AI 必须输出：
+> "✅ 会议已创建（会议号: xxx，入会链接: xxx）\n⚠️ 邮件邀请未发送（原因: xxx）\n手动通知：可将以上会议信息复制转发给参会人。"
+
+
 
 ---
 
@@ -116,6 +119,12 @@ tmeet auth status
 
 ### 时间格式
 ISO 8601 带时区：`2026-07-23T15:00+08:00`。默认时区 `+08:00`。
+常见中文时间表达转换规则：
+- "明天下午3点" → 当前日期+1天，15:00:00+08:00
+- "今天下午3点" → 如果当前时间已过15:00则报错提示，否则用今天
+- "下周一上午10点" → 计算下一个周一的日期
+- "本月15号下午2点" → 当前年月 + 15日
+- 用户未指定年份 → 默认当年
 
 ### HTML 邮件
 全部 inline styles，Container max-width 600px，品牌色 `#0066FF`。底部署名区说明 .ics 附件双击导入日历。
@@ -130,20 +139,21 @@ BEGIN:VEVENT
 UID:{meeting_id}@tencentmeeting
 DTSTART:{utc_start}
 DTEND:{utc_end}
+DTSTAMP:{now_utc}
 SUMMARY:{subject}
 DESCRIPTION:腾讯会议号：{meeting_code}\n入会链接：{join_url}
 LOCATION:{join_url}
-ORGANIZER;CN={name}:mailto:{email}
+ORGANIZER;CN={organizer_name}:mailto:{organizer_email}
 STATUS:CONFIRMED
 END:VEVENT
 END:VCALENDAR
 ```
-行分隔 `\r\n`，时间转 UTC，UID=meeting_id。
+行分隔 `\r\n`，时间转 UTC，`UID=meeting_id`，`{organizer_email}` 来自 `agently-cli +me`。
 
 ### agently-cli 两阶段确认（必须遵守）
-1. 第一阶段拿 ctk → 展示 summary → **停下等用户回复**
+1. 第一阶段拿 ctk → **记录 `ctk` 和当前时间戳**（`date +%s`） → 展示 summary → **停下等用户回复**
 2. 绝不自己确认自己
-3. ctk 5 分钟有效
+3. ctk 5 分钟有效 → 重试或超时后**必须重新走第一阶段**（旧 ctk 不可复用）
 
 ### agently-cli 错误码
 
@@ -162,8 +172,6 @@ END:VCALENDAR
 
 ## CLI 命令速查
 
-完整参数详见 `REFERENCE.md`。以下为常用触发映射：
-
 | 场景 | 用户的话（示例） | 命令 |
 |------|-----------------|------|
 | 创建会议 | "帮我建一个明天下午3点的会" | `tmeet meeting create --subject ... --start ... --end ...` |
@@ -175,6 +183,8 @@ END:VCALENDAR
 | 搜通讯录 | "搜通讯录里投资者关系的人" | `tmeet contact search --keyword ...` |
 | 踢人 | "把不在名单的人踢出去" | `tmeet control kick --meeting-id ...` |
 | 导出日志 | "导出最近7天的日志" | `tmeet tshoot log --start ... --end ...` |
+
+> 如需精细参数（`--invitees-type` `--page-token` `--auto-record-type` 等），运行 `tmeet <command> --help` 查看最新帮助。
 
 ---
 
@@ -219,7 +229,7 @@ END:VCALENDAR
 | 凭证过期 | 重新 `tmeet auth login` |
 | 时间格式错误 | 必须 ISO 8601 带时区偏移 |
 | SSH 无浏览器 | `tmeet auth login --no-browser`，手动打开链接 |
-| agently-cli 未安装 | 自动装 `@tencent-qqmail/agently-cli` + skill + `react-email` |
+| agently-cli 发送失败 | 输出会议信息让用户手动通知（半成品交付） |
 | 录制需密码 | 用 `--pwd` 传录制文件密码 |
 | 分页数据 | 用 `--page-token` 获取下一页 |
 
@@ -236,7 +246,9 @@ END:VCALENDAR
 
 ## iMIP 内嵌日程（待升级）
 
-当前 agently-cli 不支持 `text/calendar` MIME part，无法在邮件中渲染 RSVP 按钮。ICS 附件为当前方案：收件人双击即可导入 Outlook / Apple Mail / Gmail。待 agently-cli 支持 raw MIME 后升级。
+当前 agently-cli 不支持 `text/calendar` MIME part，无法在邮件中渲染 RSVP 按钮。ICS 附件为当前方案：收件人双击即可导入 Outlook / Apple Mail / Gmail。待 agently-cli 支持 raw MIME 后升级为内嵌日程。
+
+参与改进：[github.com/ikevss/ikevss-tencentmeeting](https://github.com/ikevss/ikevss-tencentmeeting)
 
 ---
 
