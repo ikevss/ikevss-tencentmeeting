@@ -1,6 +1,10 @@
 ---
 name: ikevss-tencentmeeting
-description: 腾讯会议·邀约洞察 — 覆盖会议全生命周期：建会、生成邀请函、发送邮件通知、会后复盘洞察（基于转写原文生成可视化 HTML 报告）。个人和企业账号通用（OAuth2 授权）。NOT for 企业微信会议、Zoom、Teams、飞书会议。
+version: "2.0.0"
+description: >
+  腾讯会议·邀约洞察 — 覆盖会议全生命周期：建会、生成邀请函、发送邮件通知、会后复盘洞察（基于转写原文生成可视化 HTML 报告）。
+  个人和企业账号通用（OAuth2 授权）。
+  NOT for 企业微信会议、Zoom、Teams、飞书会议；实时转写分析；会议室硬件管理。
 author: 花生ss
 url: https://github.com/ikevss/ikevss-tencentmeeting
 triggers:
@@ -52,17 +56,36 @@ triggers:
 
 ---
 
+## 状态变量
+
+多步操作中，AI 必须在上下文中保持以下变量，不可在步骤间丢失：
+
+| 变量 | 来源 | 生命周期 |
+|------|------|---------| 
+| `meeting_id` | `tmeet meeting create` | 建会 → 邀请 → 复盘 |
+| `meeting_code` | `tmeet meeting create` | 建会 → 邀请(ICS) |
+| `join_url` | `tmeet meeting create` | 建会 → 邀请(邮件) |
+| `record_file_id` | `tmeet record list` | 查录制 → 复盘 |
+| `ctk` | agently-cli 第一阶段 | 5 分钟有效 |
+| `ctk_ts` | `date +%s` 时间戳 | 判断 ctk 过期用 |
+| `organizer_email` | `agently-cli +me` | 会话内持久 |
+
+**上下文切换规则**：如果用户在中途切换话题（如从建会跳到查录制），AI 应保留已有变量但明确告知用户当前流程状态。
+
+---
+
 ## 核心原则
 
-1. **先检查再做事** — 每条请求先 `tmeet auth status`，未登录则引导
+1. **先检查再做事** — 每条请求进入操作前必须先通过前置检查（见下节 ⚡ 前置检查）
 2. **创建完就问** — 成功创建会议后必须问"需要发邮件邀请吗？"
 3. **发送前先确认** — 邮件必须浏览器预览 → 用户确认 → 才发送（agently-cli 两阶段确认）
 4. **时间自动转** — 用户说"明天下午3点" → 自动转为 `2026-07-23T15:00+08:00`
 5. **场景路由** — 用户的话决定进入哪个环节，不是每次都全走：
-   - 说"建/创建/预约/开会" → 环节1（建会），完成后提示进入环节2
-   - 说"邀请/邮件/通知" → 环节2-3（生成邀请函 + 发送）
-   - 说"录制/转写/纪要/复盘/回顾/分析" → 环节4（会后复盘）
-   - 在前环节完成后，主动问下一步
+   - 说"建/创建/预约/开会" → 阶段1（建会），完成后提示进入阶段2
+   - 说"邀请/邮件/通知" → 阶段2-3（生成邀请函 + 发送）
+   - 说"录制/转写/纪要/复盘/回顾/分析" → 阶段3（会后复盘）
+   - 在前阶段完成后，主动问下一步
+   - 复合意图（如"建会+通知张三"）按顺序执行阶段1→2，不截断
 
 ## 不做什么
 
@@ -90,20 +113,23 @@ tmeet auth status
 
 ## 对话操作流程
 
-### 创建会议
+### [阶段 1] 创建会议
+- **入口守卫**：通过前置检查（tmeet auth status 已登录）
 
-- 0. `tmeet auth status` → 未登录则 `tmeet auth login`
+- 0. 通过前置检查（见上方 ⚡ 前置检查） → 继续
 - 1. tmeet 未装 → `npm install -g @tencentcloud/tmeet@v1.0.12`
 - 2. 确认参数（主题/时间/时长） → `tmeet meeting create` → 记录 `meeting_code, join_url, meeting_id`
 - 3. 🆕 主动问："需要给参会人发邮件邀请吗？精美响应式邀请函 + 日历附件"
 
-### 邮件邀请（用户同意后）
+### [阶段 2] 邮件邀请
+- **入口守卫**：持有阶段1的 `meeting_id`/`meeting_code`/`join_url`；agently-cli 已安装已授权
 
 **首次使用（检测到 agently-cli 未安装或未授权）：**
 
-- 安装: `npm install -g @tencent-qqmail/agently-cli@latest`
-- 安装: `npm i react-email@3.0.x`
+- 安装: `npm install -g @tencent-qqmail/agently-cli@2.1.0`
+- 安装: `npm i react-email@3.0.7`
 - 安装 skill: `npx skills add https://agent.qq.com --skill -g -y`
+  （预期 skill 名称: agently-mail，安装后运行 `agently-cli +me` 验证）
 - 授权: `agently-cli auth login`
 - 确认: `agently-cli +me` 获取邮箱地址（记为 `organizer_email`）
 
@@ -125,7 +151,8 @@ tmeet auth status
 如果邮件发送失败（安装失败/授权失败/发送超时），AI 必须输出：
 > "✅ 会议已创建（会议号: xxx，入会链接: xxx）\n⚠️ 邮件邀请未发送（原因: xxx）\n手动通知：可将以上会议信息复制转发给参会人。"
 
-### 会后复盘（用户查录制/转写/已结束会议时触发）
+### [阶段 3] 会后复盘
+- **入口守卫**：无前置依赖，可独立触发；需持有 `record_file_id`（来自 `tmeet record list`）
 
 **前置判断 — AI 根据用户意图决定是否进入复盘：**
 
