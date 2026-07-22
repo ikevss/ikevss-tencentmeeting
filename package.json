@@ -1,0 +1,27 @@
+{
+  "name": "ikevss-tencentmeeting",
+  "version": "1.2.0",
+  "description": "让 Claude Code 一句话帮你创建和管理腾讯会议 — 个人和企业账号通用，基于腾讯官方 CLI (OAuth2 授权)",
+  "type": "module",
+  "keywords": [
+    "tencent-meeting",
+    "claude-code",
+    "skill",
+    "meeting",
+    "wemeet",
+    "oa"
+  ],
+  "author": "ikevss",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ikevss/ikevss-tencentmeeting"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "dependencies": {
+    "@react-email/components": "^1.0.12",
+    "react-email": "^6.9.0"
+  }
+}
