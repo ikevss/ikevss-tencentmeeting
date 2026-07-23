@@ -4,16 +4,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>腾讯会议·邀约洞察 — 从建会到复盘，一个对话框走完全程</title>
-<meta name="description" content="覆盖会议全生命周期：建会 → 生成邀请函 → 发送邮件通知 → 会后复盘洞察。个人和企业账号通用，支持周期会议、录制转写、可视化复盘报告（6 种场景）。基于腾讯官方 CLI。">
+<meta name="description" content="让 Claude Code 一句话帮你创建和管理腾讯会议。不用打开客户端填表单，建会自动问你要不要发邮件，会后自动生成可视化复盘报告。企业账号也能用。">
 <meta property="og:title" content="腾讯会议·邀约洞察">
-<meta property="og:description" content="从建会到复盘，一个对话框走完全程。建会 → 邀请函 → 发送通知 → 会后复盘。">
+<meta property="og:description" content="从建会到复盘，一个对话框走完全程。">
 <meta property="og:url" content="https://ikevss.github.io/ikevss-tencentmeeting/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Satoshi:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--canvas:#F9F9F7;--surface:#FFFFFF;--ink:#1a1a1a;--muted:#78716c;--faint:#a8a29e;--line:#e7e5e4;--warm:#f5f5f0;--accent:#0066FF;--accent-deep:#004dcb;--accent-soft:#eff6ff;--green:#166534;--green-soft:#f0fdf4;--amber:#92400e;--amber-soft:#fffbeb;--red:#991b1b;--red-soft:#fef2f2;--radius-sm:6px;--radius:12px;--radius-lg:20px;--max:1200px}
+:root{
+  --canvas:#F9F9F7;
+  --surface:#FFFFFF;
+  --ink:#1a1a1a;
+  --muted:#78716c;
+  --faint:#a8a29e;
+  --line:#e7e5e4;
+  --warm:#f5f5f0;
+  --accent:#0066FF;
+  --accent-deep:#004dcb;
+  --accent-soft:#eff6ff;
+  --green:#166534;
+  --green-soft:#f0fdf4;
+  --radius-sm:6px;
+  --radius:12px;
+  --radius-lg:20px;
+  --max:1200px
+}
 html{touch-action:manipulation;scroll-behavior:smooth}
 body{font-family:"Satoshi",-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased}
 a{color:var(--accent);text-decoration:none;transition:color .2s ease}
@@ -23,19 +40,20 @@ code{font-family:"JetBrains Mono","Cascadia Code",monospace}
 .container{max-width:var(--max);margin:0 auto;padding:0 clamp(24px,4vw,48px)}
 nav{position:fixed;top:0;left:0;right:0;z-index:100;background:hsla(48,20%,97%,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
 nav .container{display:flex;align-items:center;justify-content:space-between;height:56px}
-nav .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;color:var(--ink);letter-spacing:-.01em}
+nav .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;color:var(--ink)}
 nav .logo svg{width:26px;height:26px}
 nav .links{display:flex;gap:28px;font-size:14px;font-weight:500}
 nav .links a{color:var(--muted)}
 nav .links a:hover{color:var(--ink)}
 .hero{padding:clamp(100px,16vh,160px) 0 clamp(60px,10vh,100px)}
 .hero .container{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,8vw,80px);align-items:center}
-.hero .hero-tag{margin-bottom:16px;display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:var(--accent-soft);color:var(--accent);border-radius:20px;font-size:13px;font-weight:600;letter-spacing:.02em}
-.hero h1{font-size:clamp(34px,5vw,60px);font-weight:900;letter-spacing:-.025em;line-height:1.08;margin-bottom:24px;color:var(--ink)}
+.hero .hero-left{}
+.hero .hero-tag{margin-bottom:16px;display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:var(--accent-soft);color:var(--accent);border-radius:20px;font-size:13px;font-weight:600}
+.hero h1{font-size:clamp(34px,5.5vw,60px);font-weight:900;letter-spacing:-.025em;line-height:1.08;margin-bottom:24px;color:var(--ink)}
 .hero h1 mark{background:none;color:var(--accent)}
-.hero .hero-desc{font-size:clamp(15px,2vw,18px);line-height:1.7;color:var(--muted);max-width:460px;margin-bottom:32px}
+.hero .hero-desc{font-size:clamp(15px,2vw,18px);line-height:1.7;color:var(--muted);max-width:440px;margin-bottom:32px}
 .hero .cta{display:flex;gap:12px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:var(--radius);font-size:15px;font-weight:600;cursor:pointer;transition:transform .15s cubic-bezier(.34,1.56,.64,1),box-shadow .15s ease;border:none;font-family:inherit;letter-spacing:-.01em}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:var(--radius);font-size:15px;font-weight:600;cursor:pointer;transition:transform .15s cubic-bezier(.34,1.56,.64,1),box-shadow .15s ease;border:none;font-family:inherit}
 .btn:active{transform:translateY(1px)}
 .btn-primary{background:var(--accent);color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.06)}
 .btn-primary:hover{background:var(--accent-deep);color:#fff;text-decoration:none;box-shadow:0 4px 14px rgba(0,102,255,.25)}
@@ -52,100 +70,127 @@ nav .links a:hover{color:var(--ink)}
 .hero .stats{margin-top:48px;display:flex;gap:40px}
 .hero .stats div{font-size:14px;color:var(--muted)}
 .hero .stats b{display:block;font-size:clamp(22px,3vw,28px);color:var(--ink);font-weight:700;letter-spacing:-.02em}
-@media(max-width:768px){.hero .container{grid-template-columns:1fr;gap:48px}.hero .hero-right{order:-1}.hero .stats{flex-wrap:wrap;gap:20px}.preview-box{max-width:100%}}
+@media(max-width:768px){
+  .hero .container{grid-template-columns:1fr;gap:48px}
+  .hero .hero-right{order:-1}
+  .hero .stats{flex-wrap:wrap;gap:20px}
+  .preview-box{max-width:100%}
+}
 section{padding:clamp(56px,10vh,96px) 0}
 .section-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:16px}
 .section-head h2{font-size:clamp(26px,3.5vw,40px);font-weight:900;letter-spacing:-.02em;margin-bottom:12px;line-height:1.2}
-.section-head p{font-size:16px;max-width:560px}
-.cap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
-.cap-grid .cap{background:var(--surface);padding:20px 22px}
-.cap-grid .cap .name{font-weight:700;font-size:15px;margin-bottom:4px}
-.cap-grid .cap .items{font-size:13px;color:var(--muted);line-height:1.7}
-@media(max-width:640px){.cap-grid{grid-template-columns:1fr}}
-.zigzag{display:grid;grid-template-columns:1fr 1fr;gap:clamp(48px,8vw,80px);align-items:center}
-.zigzag:nth-child(even) .zigzag-img{order:-1}
-.zigzag h3{font-size:clamp(20px,2.5vw,26px);font-weight:700;letter-spacing:-.02em;margin-bottom:12px;line-height:1.25}
-.zigzag p{font-size:15px;line-height:1.7}
-.zigzag .icon-wrap{width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:var(--accent-soft);border-radius:var(--radius);margin-bottom:16px}
-.zigzag .icon-wrap svg{width:22px;height:22px;stroke:var(--accent)}
-.zigzag .result{display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:8px 14px;background:var(--green-soft);border-radius:var(--radius-sm);font-size:13px;font-weight:500;color:var(--green)}
-.zigzag .step-badge{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--accent);color:#fff;border-radius:50%;font-size:13px;font-weight:700;margin-right:10px;vertical-align:middle}
-@media(max-width:768px){.zigzag,.zigzag:nth-child(even){grid-template-columns:1fr;gap:32px}.zigzag:nth-child(even) .zigzag-img{order:-1}}
+.section-head p{font-size:16px;max-width:520px}
+.pain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(16px,2vw,24px);margin-top:clamp(40px,6vh,64px)}
+.pain-card{padding:clamp(20px,3vw,32px);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg)}
+.pain-card .icon{width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:var(--accent-soft);border-radius:var(--radius);margin-bottom:16px;font-size:24px}
+.pain-card h4{font-size:17px;font-weight:700;margin-bottom:8px}
+.pain-card p{font-size:14px;line-height:1.65}
+.feat{margin-top:clamp(48px,8vh,80px);display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(16px,2vw,24px)}
+.feat-card{padding:clamp(20px,3vw,32px);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);transition:border-color .2s ease,box-shadow .2s ease}
+.feat-card:hover{border-color:var(--faint);box-shadow:0 8px 30px rgba(0,0,0,.04)}
+.feat-card .icon-wrap{width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--accent-soft);border-radius:var(--radius);margin-bottom:16px}
+.feat-card .icon-wrap svg{width:20px;height:20px;stroke:var(--accent)}
+.feat-card h4{font-size:17px;font-weight:700;margin-bottom:6px}
+.feat-card p{font-size:14px;line-height:1.65}
+.feat-card code{display:inline-block;margin-top:10px;padding:3px 10px;background:var(--warm);border-radius:var(--radius-sm);font-size:12px;color:var(--muted)}
+.comp-table{max-width:860px;margin:0 auto;border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;background:var(--surface)}
+.comp-table table{width:100%;border-collapse:collapse}
+.comp-table th{background:var(--warm);padding:14px 20px;font-size:13px;font-weight:700;text-align:left;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.comp-table td{padding:14px 20px;font-size:14px;border-top:1px solid var(--line)}
+.comp-table td:first-child{color:var(--muted);font-size:13px}
+.comp-table td:nth-child(2){text-align:center}
+.comp-table td:nth-child(3){text-align:center;color:var(--muted)}
+.comp-table .check{color:var(--green)}
+.comp-table .cross{color:var(--red)}
 .install-box{max-width:560px;margin:0 auto;background:var(--ink);border-radius:var(--radius-lg);padding:clamp(24px,4vw,36px);box-shadow:0 20px 50px rgba(0,0,0,.12)}
 .install-box .step{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6c7086;margin-bottom:8px}
 .install-box code{display:block;background:#11111b;color:#cdd6f4;padding:16px 20px;border-radius:var(--radius);font-size:14px;margin-bottom:16px;border:1px solid #313244}
 .install-box .hint{font-size:13px;color:#585b70}
 .faq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:clamp(12px,2vw,20px)}
 .faq-item{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:clamp(20px,3vw,28px)}
-.faq-item h4{font-size:16px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em}
+.faq-item h4{font-size:16px;font-weight:700;margin-bottom:8px}
 .faq-item p{font-size:14px}
-.cta-section{padding:clamp(60px,12vh,100px) 0;text-align:center}
-.cta-section h2{font-size:clamp(28px,4vw,44px);font-weight:900;letter-spacing:-.02em;margin-bottom:16px;line-height:1.15}
 footer{padding:40px 0;border-top:1px solid var(--line);text-align:center}
 footer p{font-size:13px}
 footer a{color:var(--muted)}
-footer .github-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:16px;padding:8px 16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);font-size:14px;font-weight:500;transition:border-color .2s ease}
-footer .github-link:hover{border-color:var(--faint);color:var(--ink)}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.reveal{animation:fadeUp .6s cubic-bezier(.16,1,.3,1) backwards}
-.reveal:nth-child(1){animation-delay:.05s}
-.reveal:nth-child(2){animation-delay:.12s}
-.reveal:nth-child(3){animation-delay:.19s}
-.reveal:nth-child(4){animation-delay:.26s}
-.reveal:nth-child(5){animation-delay:.33s}
-.reveal:nth-child(6){animation-delay:.40s}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}html{scroll-behavior:auto}}
-@media(max-width:640px){nav .links{display:none}}
 </style>
 </head>
 <body>
-
 <nav>
 <div class="container">
 <a href="/ikevss-tencentmeeting/" class="logo">
-<svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="32" height="32" rx="8" fill="#0066FF"/><text x="16" y="23" text-anchor="middle" font-size="18" font-weight="900" fill="#fff" font-family="Satoshi,sans-serif" letter-spacing="-1">MT</text></svg>
+<svg width="26" height="26" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#0066FF"/><text x="16" y="23" text-anchor="middle" font-size="18" font-weight="900" fill="#fff" font-family="Satoshi,sans-serif" letter-spacing="-1">MT</text></svg>
 腾讯会议·邀约洞察
 </a>
 <div class="links">
+<a href="#pain">痛点</a>
 <a href="#features">能力</a>
-<a href="#journey">四环节旅程</a>
+<a href="#compare">对比</a>
 <a href="#install">安装</a>
 <a href="#faq">常见问题</a>
-<a href="https://github.com/ikevss/ikevss-tencentmeeting" target="_blank">GitHub <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg></a>
+<a href="https://github.com/ikevss/ikevss-tencentmeeting">GitHub</a>
 </div>
 </div>
 </nav>
 
 <section class="hero">
 <div class="container">
-<div class="hero-left reveal">
-<div class="hero-tag">腾讯会议 Skill · 支持企业版</div>
-<h1>腾讯会议·邀约洞察<br>从建会到复盘，<mark>一个对话框走完全程</mark></h1>
-<p class="hero-desc">不只是"建会工具"。建会 → 生成邀请函 → 发送邮件通知 → 会后复盘洞察，四环节全流程在同一个对话框里完成。个人和企业账号通用，无需 Token。</p>
+<div class="hero-left">
+<div class="hero-tag">Claude Code 技能 · 腾讯会议全生命周期</div>
+<h1>从建会到复盘<br>一个对话框<mark>走完全程</mark></h1>
+<p class="hero-desc">建会不用打开客户端，发通知自动生成精美邀请函，会后自动出可视化复盘报告。企业账号也能用。</p>
 <div class="cta">
-<a href="#install" class="btn btn-primary">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-快速安装
-</a>
-<a href="https://github.com/ikevss/ikevss-tencentmeeting" target="_blank" class="btn btn-ghost">GitHub ↗</a>
+<a href="#install" class="btn btn-primary">快速安装</a>
+<a href="https://github.com/ikevss/ikevss-tencentmeeting" class="btn btn-ghost">GitHub ↗</a>
 </div>
 <div class="stats">
-<div><b>四环节全流程</b> 建会到复盘</div>
-<div><b>企业账号</b> 也能用</div>
-<div><b>会后自动复盘</b> 录制转报告</div>
+<div><b>四个环节</b> 建会→邀请→发送→复盘</div>
+<div><b>企业账号</b> 通用 OAuth2 授权</div>
+<div><b>会后自动</b> 生成可视化报告</div>
 </div>
 </div>
-<div class="hero-right reveal">
+<div class="hero-right">
 <div class="preview-box">
-<div class="line"><span class="prompt">> 帮我复盘上周的产品评审会</span></div>
+<div class="line"><span class="prompt">> 帮我建一个明天下午3点的会，讨论Q2财报，通知张三和李四</span></div>
 <div style="margin-top:12px">
-<div class="line"><span class="result">✅ 已生成复盘报告</span></div>
-<div class="line" style="margin-top:8px"><span class="info">录制时长: 1小时23分</span></div>
-<div class="line"><span class="info">发言人: 8 人</span></div>
-<div class="line"><span class="info">关键决策: 3 项</span></div>
-<div class="line"><span class="info">行动项: </span><span class="result">7 条</span></div>
+<div class="line"><span class="result">✅ 已创建腾讯会议</span></div>
+<div class="line"><span class="info">会议号: 192 715 206</span></div>
+<div class="line"><span class="info">入会链接: https://...</span></div>
+<div class="line"><span class="info">邀请函已生成，浏览器预览中...</span></div>
 </div>
-<div style="margin-top:14px;font-size:12px;color:#6c7086">📊 HTML 报告已生成，浏览器打开预览<span class="cursor"></span></div>
+<div style="margin-top:14px;font-size:12px;color:#6c7086">需要发邮件邀请吗？精美邀请函 + 日历附件<span class="cursor"></span></div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="pain">
+<div class="container">
+<div class="section-label">你的痛点</div>
+<div class="section-head">
+<h2>开会这件事，不该这么麻烦</h2>
+<p>建会、通知、复盘——每个环节都在消耗你的时间。</p>
+</div>
+<div class="pain-grid">
+<div class="pain-card">
+<div class="icon">😫</div>
+<h4>建会麻烦</h4>
+<p>打开客户端、填表单、复制链接、发通知——一场会前要花 15 分钟</p>
+</div>
+<div class="pain-card">
+<div class="icon">😶</div>
+<h4>通知完就完</h4>
+<p>发完邮件没人追踪，开会时才发现关键人没到</p>
+</div>
+<div class="pain-card">
+<div class="icon">😩</div>
+<h4>复盘成本高</h4>
+<p>听录音、扒纪要、做 PPT——一场 1 小时的会复盘要花 3 小时</p>
+</div>
+<div class="pain-card">
+<div class="icon">😤</div>
+<h4>企业账号用不了</h4>
+<p>腾讯官方 MCP 方案需要手动获取 Token，企业账号拿不到</p>
 </div>
 </div>
 </div>
@@ -153,230 +198,98 @@ footer .github-link:hover{border-color:var(--faint);color:var(--ink)}
 
 <section id="features">
 <div class="container">
-<div class="section-label reveal">能力清单</div>
-<div class="section-head reveal" style="margin-bottom:clamp(40px,6vh,64px)">
-<h2>覆盖会议全生命周期</h2>
-<p>开会前不用打开客户端填表，开会后不用翻邮件找录制——对 AI 说一句话就行。</p>
+<div class="section-label">四个环节</div>
+<div class="section-head">
+<h2>一句话，四个环节自动串联</h2>
+<p>你对 AI 说一句话，它帮你跑完全程。</p>
 </div>
-<div class="cap-grid reveal">
-<div class="cap">
-<div class="name">📅 会议管理</div>
-<div class="items">创建 · 查询 · 取消 · 更新 · 周期性会议 · 成员增删替换</div>
+<div class="feat">
+<div class="feat-card">
+<div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+<h4>📅 建会</h4>
+<p>一句话创建，支持周期会议、成员管理、密码设置。自动检测时间冲突。</p>
+<code>"帮我建一个明天下午3点的会"</code>
 </div>
-<div class="cap">
-<div class="name">📧 邀请函与通知</div>
-<div class="items">HTML 邀请函 · 浏览器预览确认 · 邮件发送 · ICS 日历附件</div>
+<div class="feat-card">
+<div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+<h4>📧 发通知</h4>
+<p>自动生成精美 HTML 邀请函，附带 .ics 日历文件，收件人双击即可加进日程。</p>
+<code>"给参会人发邮件邀请"</code>
 </div>
-<div class="cap">
-<div class="name">🎬 录制与转写</div>
-<div class="items">录制列表 · 下载地址 · 智能纪要 · 转写全文/段落/搜索 · 权限管理</div>
-</div>
-<div class="cap">
-<div class="name">📊 会后复盘</div>
-<div class="items">单场复盘 · 多场对比 · 情绪参与度 · 决策追踪 · 行动项跟进 · 发言人分析</div>
-</div>
-<div class="cap">
-<div class="name">📋 参会报告</div>
-<div class="items">参会人列表 · 等候室日志</div>
-</div>
-<div class="cap">
-<div class="name">👥 通讯录</div>
-<div class="items">按姓名搜索 · 按邮箱查找 · 按手机号查找</div>
-</div>
-<div class="cap">
-<div class="name">🎛️ 会中控制</div>
-<div class="items">呼叫未到成员 · 踢出成员</div>
-</div>
-<div class="cap">
-<div class="name">🔐 安全</div>
-<div class="items">OAuth2 浏览器授权 · AES-256-GCM 加密存储 · 密码不暴露给 CLI</div>
+<div class="feat-card">
+<div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+<h4>📊 复盘洞察</h4>
+<p>18 种会议类型自动识别，生成可视化 HTML 报告，跨会议趋势对比。</p>
+<code>"帮我复盘上周的产品评审会"</code>
 </div>
 </div>
 </div>
 </section>
 
-<section id="journey">
+<section id="compare">
 <div class="container">
-<div class="section-label reveal">四环节旅程</div>
-<div class="section-head reveal" style="margin-bottom:clamp(48px,8vh,72px)">
-<h2>从建会到复盘，四步走完</h2>
-<p>不是四个工具，是一个对话框。一句话下去，AI 自动串联建会、邀请、通知、复盘全流程。</p>
+<div class="section-label">对比官方</div>
+<div class="section-head">
+<h2>不只是建会，是全生命周期</h2>
+<p>腾讯官方 MCP 解决"建会"，这个技能解决"从建会到复盘"。</p>
 </div>
-
-<div class="zigzag reveal">
-<div>
-<div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-<h3><span class="step-badge">1</span>建会</h3>
-<p>一句话创建，支持周期会议、成员增删替换。对 AI 说"帮我建一个明天下午3点的会，讨论Q2财报"——拿到会议号和入会链接。</p>
-<div class="result">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-✨ 创建完自动问："需要生成邀请函吗？"
+<div class="comp-table">
+<table>
+<thead><tr><th>能力</th><th>腾讯会议·邀约洞察</th><th>腾讯官方 MCP</th></tr></thead>
+<tbody>
+<tr><td>创建/查询/修改/取消会议</td><td class="check">✅</td><td class="check">✅</td></tr>
+<tr><td>周期会议、成员管理</td><td class="check">✅</td><td class="check">✅</td></tr>
+<tr><td>HTML 邀请函生成</td><td class="check">✅</td><td class="cross">❌</td></tr>
+<tr><td>邮件通知 + 日历附件</td><td class="check">✅</td><td class="cross">❌</td></tr>
+<tr><td>会后复盘报告</td><td class="check">✅</td><td class="cross">❌</td></tr>
+<tr><td>18 种会议类型识别</td><td class="check">✅</td><td class="cross">❌</td></tr>
+<tr><td>跨会议趋势追踪</td><td class="check">✅</td><td class="cross">❌</td></tr>
+<tr><td>通讯录搜索</td><td class="check">✅</td><td class="cross">❌</td></tr>
+<tr><td>会中控制（呼叫/踢人）</td><td class="check">✅</td><td class="cross">❌</td></tr>
+<tr><td>企业账号（OAuth2 通用）</td><td class="check">✅</td><td class="check">✅</td></tr>
+</tbody>
+</table>
 </div>
-</div>
-<div class="zigzag-img">
-<div style="background:var(--warm);border-radius:var(--radius-lg);padding:24px">
-<div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);margin-bottom:8px">tmeet meeting create</div>
-<div style="font-size:13px;color:var(--muted)">subject: "Q2财报讨论"</div>
-<div style="font-size:13px;color:var(--muted)">start: 2026-07-23T15:00+08:00</div>
-<div style="font-size:13px;color:var(--muted)">end: 2026-07-23T16:00+08:00</div>
-<div style="margin-top:10px;font-size:13px;color:var(--green);font-weight:500">→ meeting_code: 192 715 206</div>
-</div>
-</div>
-</div>
-
-<div class="zigzag reveal" style="margin-top:clamp(48px,8vh,80px)">
-<div>
-<div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-<h3><span class="step-badge">2</span>邀请函</h3>
-<p>自动生成精美 HTML 邀请函，包含会议主题、时间、议程、入会方式。桌面端和手机端都能正常看。浏览器预览确认后再发出去。</p>
-<div class="result">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-浏览器里先预览，确认了才发出去
-</div>
-</div>
-<div class="zigzag-img">
-<div style="background:linear-gradient(135deg,#0066FF 0%,#004dcb 100%);border-radius:var(--radius-lg);padding:24px;color:#fff">
-<div style="font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px">📧 邀请函预览</div>
-<div style="background:rgba(255,255,255,.12);border-radius:8px;padding:16px;margin-bottom:8px">
-<div style="font-weight:700;font-size:14px;margin-bottom:6px">📅 会议邀请：Q2财报讨论</div>
-<div style="font-size:12px;opacity:.8;line-height:1.8">2026年7月23日 15:00 - 16:00<br>会议号：192 715 206</div>
-</div>
-<div style="background:#fff;color:var(--accent);text-align:center;padding:10px;border-radius:8px;font-size:13px;font-weight:600">🔗 一键加入会议</div>
-<div style="font-size:11px;opacity:.6;margin-top:10px">发送前可预览，确认了才发出去</div>
-</div>
-</div>
-</div>
-
-<div class="zigzag reveal" style="margin-top:clamp(48px,8vh,80px)">
-<div>
-<div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></div>
-<h3><span class="step-badge">3</span>发送通知</h3>
-<p>通过 agently-cli 发送邮件通知参会人，附带 ICS 日历附件。收件人双击即可把会议加进日历，不用手动录入时间。</p>
-<div class="result">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-邮件 + ICS 日历附件，一键加进日程
-</div>
-</div>
-<div class="zigzag-img">
-<div style="background:var(--warm);border-radius:var(--radius-lg);padding:24px">
-<div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);margin-bottom:8px">agently mail send</div>
-<div style="font-size:13px;color:var(--muted)">to: ["zhangsan@company.com", "lisi@company.com"]</div>
-<div style="font-size:13px;color:var(--muted)">subject: "会议邀请：Q2财报讨论"</div>
-<div style="font-size:13px;color:var(--muted)">attachment: meeting.ics</div>
-<div style="margin-top:10px;font-size:13px;color:var(--green);font-weight:500">→ 已发送 2 封邮件</div>
-</div>
-</div>
-</div>
-
-<div class="zigzag reveal" style="margin-top:clamp(48px,8vh,80px)">
-<div>
-<div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></div>
-<h3><span class="step-badge">4</span>会后复盘</h3>
-<p>拉取录制转写，生成可视化 HTML 复盘报告。覆盖 6 种场景：单场复盘、多场对比、情绪参与度、决策追踪、行动项跟进、发言人分析。</p>
-<div class="result">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-录制转写 → 可视化 HTML 报告，6 种场景
-</div>
-</div>
-<div class="zigzag-img">
-<div style="background:var(--ink);border-radius:var(--radius-lg);padding:24px;color:#cdd6f4">
-<div style="font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px">📊 复盘报告预览</div>
-<div style="display:flex;gap:8px;margin-bottom:8px">
-<div style="flex:1;background:rgba(0,102,255,.2);border-radius:6px;padding:10px;text-align:center">
-<div style="font-size:18px;font-weight:700;color:#89b4fa">8</div>
-<div style="font-size:10px;opacity:.7">发言人</div>
-</div>
-<div style="flex:1;background:rgba(166,227,161,.2);border-radius:6px;padding:10px;text-align:center">
-<div style="font-size:18px;font-weight:700;color:#a6e3a1">3</div>
-<div style="font-size:10px;opacity:.7">关键决策</div>
-</div>
-<div style="flex:1;background:rgba(245,194,231,.2);border-radius:6px;padding:10px;text-align:center">
-<div style="font-size:18px;font-weight:700;color:#f5c2e7">7</div>
-<div style="font-size:10px;opacity:.7">行动项</div>
-</div>
-</div>
-<div style="font-size:11px;opacity:.6">HTML 报告 · 图表可视化 · 浏览器打开</div>
-</div>
-</div>
-</div>
-
 </div>
 </section>
 
 <section id="install">
 <div class="container">
-<div class="section-label reveal">一分钟装好</div>
-<div class="section-head reveal" style="margin-bottom:clamp(32px,5vh,48px)">
-<h2>三步装完，之后全靠说</h2>
+<div class="section-label">快速开始</div>
+<div class="section-head">
+<h2>三步开始使用</h2>
 </div>
-<div class="install-box reveal">
-<div class="step">第一步 · 安装 Skill</div>
-<code>npx skills add ikevss/ikevss-tencentmeeting</code>
-<div class="step" style="margin-top:24px">第二步 · 安装 CLI</div>
-<code>npm install -g @tencentcloud/tmeet@v1.0.12</code>
-<div class="step" style="margin-top:24px">第三步 · 登录（只需一次）</div>
-<code>tmeet auth login</code>
-<div class="hint">启动 Claude Code，浏览器会自动弹出腾讯会议授权页面，点"授权"即完成。之后永久免登录。</div>
-</div>
-</div>
-</section>
-
-<section>
-<div class="container">
-<div class="section-label reveal">实际怎么用</div>
-<div class="section-head reveal" style="margin-bottom:clamp(32px,5vh,48px)">
-<h2>就是这样，不用记命令</h2>
-</div>
-<div style="max-width:640px;margin:0 auto">
-<div class="reveal" style="padding:16px 20px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:10px;font-size:14px"><span style="color:var(--accent);font-weight:600">创建会议</span><br>帮我建一个明天下午3点的腾讯会议，讨论Q2财报</div>
-<div class="reveal" style="padding:16px 20px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:10px;font-size:14px"><span style="color:var(--accent);font-weight:600">创建 + 邀请</span><br>建一个每周一早上的周会，给参会人发邮件邀请</div>
-<div class="reveal" style="padding:16px 20px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:10px;font-size:14px"><span style="color:var(--accent);font-weight:600">会后复盘</span><br>帮我复盘上周的产品评审会，输出 HTML 报告</div>
-<div class="reveal" style="padding:16px 20px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:10px;font-size:14px"><span style="color:var(--accent);font-weight:600">查录制</span><br>帮我查一下上次路演的录制和智能纪要</div>
-<div class="reveal" style="padding:16px 20px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:10px;font-size:14px"><span style="color:var(--accent);font-weight:600">搜通讯录</span><br>帮我在通讯录里搜索"投资者关系"部门的人</div>
+<div class="install-box">
+<div class="step">第 1 步 · 安装</div>
+<code>node install.js</code>
+<div class="step" style="margin-top:24px">第 2 步 · 登录（30 秒，只需一次）</div>
+<code>帮我登录腾讯会议</code>
+<div class="hint">浏览器自动弹出，登录并授权。之后永久免登录。</div>
+<div class="step" style="margin-top:24px">第 3 步 · 直接用</div>
+<code>帮我创建一个腾讯会议，明天下午3点讨论Q2财报，通知 zhang@company.com</code>
 </div>
 </div>
 </section>
 
 <section id="faq">
 <div class="container">
-<div class="section-label reveal">你可能要问</div>
-<div class="section-head reveal" style="margin-bottom:clamp(32px,5vh,48px)">
-<h2>常见问题</h2>
+<div class="section-label">常见问题</div>
+<div class="section-head">
+<h2>你可能想问的</h2>
 </div>
 <div class="faq-grid">
-<div class="faq-item reveal"><h4>企业账号真的能用吗？</h4><p>可以。本技能使用 OAuth2 浏览器授权，腾讯会议不区分个人/企业，只要账号能登录就能授权。</p></div>
-<div class="faq-item reveal"><h4>SSH 服务器没有浏览器怎么办？</h4><p>用 tmeet auth login --no-browser，CLI 会打印一个授权链接。在你自己的电脑浏览器打开完成授权即可。</p></div>
-<div class="faq-item reveal"><h4>发邮件需要额外装什么？</h4><p>需要 agently-cli（发邮件）和 react-email（生成精美邮件）。创建会议后如果选择发邀请，AI 会自动检查并引导安装。</p></div>
-<div class="faq-item reveal"><h4>支持哪些平台？</h4><p>macOS、Linux、Windows 全支持。Node.js >= 16 就行。</p></div>
-<div class="faq-item reveal"><h4>凭证安全吗？</h4><p>AES-256-GCM 加密存储，明文不落盘。OAuth2 流程让你的密码不会暴露给 CLI。随时可以 tmeet auth logout 清除。</p></div>
-<div class="faq-item reveal"><h4>如何卸载？</h4><p>运行 npm uninstall -g @tencentcloud/tmeet 并删除 ~/.claude/skills/SKILL.md 即可。</p></div>
-</div>
-</div>
-</section>
-
-<section class="cta-section">
-<div class="container">
-<h2 class="reveal">让你的 AI 帮你<br>管好每一场会</h2>
-<p class="reveal" style="margin-top:10px;font-size:16px;color:var(--muted)">建会 → 邀请函 → 发送通知 → 会后复盘，一个对话框走完全程。</p>
-<div class="reveal" style="margin-top:32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-<a href="https://github.com/ikevss/ikevss-tencentmeeting" target="_blank" class="btn btn-primary">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
-GitHub 下载
-</a>
-<a href="#install" class="btn btn-ghost">安装教程 ↑</a>
+<div class="faq-item"><h4>企业账号能用吗？</h4><p>能。使用 OAuth2 浏览器授权，腾讯会议不区分个人/企业，只要账号能登录就能授权。</p></div>
+<div class="faq-item"><h4>登录超时怎么办？</h4><p>不要加 `--no-browser` 参数。让 CLI 自动弹出浏览器窗口，浏览器中有完整的登录和授权流程，不容易超时。</p></div>
+<div class="faq-item"><h4>发邮件需要额外装什么？</h4><p>需要 agently-cli（发邮件）和 react-email（生成精美邮件）。创建会议后如果选择发邀请，AI 会自动检查并引导安装。</p></div>
+<div class="faq-item"><h4>如何卸载？</h4><p>运行 `npm uninstall -g @tencentcloud/tmeet` 并删除 `~/.claude/skills/SKILL.md` 即可。</p></div>
 </div>
 </div>
 </section>
 
 <footer>
 <div class="container">
-<a class="github-link" href="https://github.com/ikevss/ikevss-tencentmeeting" target="_blank">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
-View on GitHub
-</a>
-<p>MIT © 2026 <a href="https://github.com/ikevss">花生ss</a> · 基于腾讯会议官方 CLI <a href="https://github.com/TencentCloud/tencentmeeting-cli" target="_blank">@tencentcloud/tmeet</a></p>
+<p>MIT © 2026 <a href="https://github.com/ikevss">花生ss</a> · <a href="https://github.com/ikevss/ikevss-tencentmeeting">GitHub</a> · <a href="https://www.skills.sh/">skills.sh</a></p>
 </div>
 </footer>
-
 </body>
 </html>
