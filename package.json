@@ -1,6 +1,6 @@
 {
   "name": "ikevss-tencentmeeting",
-  "version": "1.2.0",
+  "version": "2.2.5",
   "description": "让 Claude Code 一句话帮你创建和管理腾讯会议 — 个人和企业账号通用，基于腾讯官方 CLI (OAuth2 授权)",
   "type": "module",
   "keywords": [

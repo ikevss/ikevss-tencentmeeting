@@ -1,6 +1,6 @@
 ---
 name: ikevss-tencentmeeting
-version: "2.1.0"
+version: "2.2.5"
 description: >
   腾讯会议·邀约洞察 — 覆盖会议全生命周期：建会、生成邀请函、发送邮件通知、会后复盘洞察（基于转写原文生成可视化 HTML 报告）。
   个人和企业账号通用（OAuth2 授权）。
@@ -49,7 +49,7 @@ triggers:
   - 会开了什么
 ---
 
-# 腾讯会议·邀约洞察 v2.1
+# 腾讯会议·邀约洞察 v2.2
 
 > 基于 `@tencentcloud/tmeet` v1.0.12 · OAuth2 授权 · 个人和企业账号通用 · 会前→会中→会后 全生命周期覆盖。
 

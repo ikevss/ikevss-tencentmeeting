@@ -1,10 +1,10 @@
 # ikevss-tencentmeeting — 对话交接文档
 
-**最后更新**: 2026-07-22
-**版本**: v1.2
-**状态**: ✅ 独立包就绪，30 条 CLI 子命令全覆盖 + 邮件邀请（HTML + ICS 日程）
+**最后更新**: 2026-07-23
+**版本**: v2.2.5
+**状态**: ✅ 复盘洞察核心差异化定位 + 诚实分层 + 密度诚实 + 18种会议类型专属分析 + 跨会议追踪
 **项目路径**: `E:\AIwork\mimocode\ikevss-tencentmeeting\`
-**独立包**: `E:\AIwork\mimocode\ikevss-tencentmeeting-v1.2.tar.gz`
+**独立包**: `E:\AIwork\mimocode\ikevss-tencentmeeting-v2.2.5.zip`
 
 ---
 
@@ -13,7 +13,7 @@
 复制以下命令到新对话即可继续：
 
 ```
-继续 ikevss-tencentmeeting 腾讯会议独立技能迭代，交接文档在 HANDOVER.md
+持续改进 ikevss-tencentmeeting 腾讯会议·邀约洞察 v2.2.5，交接文档在 HANDOVER.md
 ```
 
 ---
