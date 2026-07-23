@@ -67,8 +67,8 @@ triggers:
 
 | 即将执行 | 必须 Read |
 |---------|----------|
-| 阶段 2 邮件邀请 | `references/email-invite-spec.md` |
-| 阶段 3 会后复盘 Phase A 起 | `references/insight-rendering.md` + `references/insight-examples.md` |
+| 阶段 2 邮件邀请 | `email-invite-spec.md` |
+| 阶段 3 会后复盘 Phase A 起 | `insight-rendering.md` + `insight-examples.md` |
 
 ---
 
@@ -141,7 +141,7 @@ triggers:
 ### [阶段 2] 邮件邀请
 - **入口守卫**：持有阶段1的 `meeting_id`/`meeting_code`/`join_url`；agently-cli 已安装已授权
 
-> **加载契约**：首次发送前，必须 Read `references/email-invite-spec.md`（含 ICS 模板 + HTML/CSS + 两阶段确认）。
+> **加载契约**：首次发送前，必须 Read `email-invite-spec.md`（含 ICS 模板 + HTML/CSS + 两阶段确认）。
 
 **首次使用**：`npm install -g @tencent-qqmail/agently-cli@2.1.0` → `npm i react-email@3.0.7` → `agently-cli auth login` → `agently-cli +me` 获取邮箱
 
@@ -159,7 +159,7 @@ triggers:
 ### [阶段 3] 会后复盘
 - **入口守卫**：无前置依赖，可独立触发
 
-> **加载契约**：进入 Phase A 前，必须 Read `references/insight-rendering.md` + `references/insight-examples.md`。
+> **加载契约**：进入 Phase A 前，必须 Read `insight-rendering.md` + `insight-examples.md`。
 
 **前置判断**：
 - 说"查录制/查转写/查纪要" → 拿到数据后问"需要复盘分析吗？"
