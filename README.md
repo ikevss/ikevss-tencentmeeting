@@ -62,7 +62,7 @@ node install.js
 
 # 方式二：手动安装
 npm install -g @tencentcloud/tmeet@v1.0.12
-cp ikevss-tencentmeeting.md ~/.claude/skills/
+cp SKILL.md ~/.claude/skills/
 ```
 
 > 安装后 **重启 Claude Code**。
@@ -190,7 +190,7 @@ AI 自动检测并重新运行 `tmeet auth login`，无需手动干预。
 
 ```bash
 npm uninstall -g @tencentcloud/tmeet
-rm ~/.claude/skills/ikevss-tencentmeeting.md
+rm ~/.claude/skills/SKILL.md
 ```
 </details>
 
@@ -209,8 +209,12 @@ rm ~/.claude/skills/ikevss-tencentmeeting.md
 
 | 文件 | 说明 |
 |------|------|
+| `SKILL.md` | Skill 主文件（AI 读取） |
+| `references/` | 参考文档（按需加载） |
+| `email-invite-spec.md` | 邮件邀请规范（ICS + HTML/CSS + 两阶段确认） |
+| `insight-rendering.md` | 复盘渲染规范（诚实分层 + 品牌规范） |
+| `insight-examples.md` | 复盘输出示例与边界 case |
 | `install.js` | 一键安装脚本 |
-| `ikevss-tencentmeeting.md` | Skill 文件（AI 读取） |
 | `README.md` | 本文件 |
 
 ---
