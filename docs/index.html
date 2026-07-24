@@ -294,16 +294,40 @@ footer a{color:var(--muted)}
 <div class="section-label">快速开始</div>
 <div class="section-head">
 <h2>三步开始使用</h2>
+<p>不需要懂命令行，对着 AI 说话就行。</p>
 </div>
-<div class="install-box">
-<div class="step">第 1 步 · 安装</div>
-<code>node install.js</code>
+
+<!-- 方式一：一键安装（推荐非开发者） -->
+<div style="max-width:660px;margin:0 auto 40px;background:var(--accent-soft);border:1px solid #bfdbfe;border-radius:var(--radius-lg);padding:clamp(24px,4vw,36px)">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+<span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:var(--accent);border-radius:8px;color:#fff;font-weight:700;font-size:14px">★</span>
+<div><h4 style="font-size:17px;font-weight:700;margin:0">推荐安装方式（不需要懂命令行）</h4><p style="font-size:13px;color:var(--muted);margin:4px 0 0">安装 Claude Code 后，直接对 AI 说下面的话就行</p></div>
+</div>
+<div class="install-box" style="box-shadow:none;margin:0">
+<div class="step">第 1 步 · 对 AI 说</div>
+<code>帮我安装腾讯会议技能 ikevss-tencentmeeting</code>
+<div class="hint">Claude Code 会自动从 GitHub 下载、安装并配置好一切。</div>
 <div class="step" style="margin-top:24px">第 2 步 · 登录（30 秒，只需一次）</div>
 <code>帮我登录腾讯会议</code>
-<div class="hint">浏览器自动弹出，登录并授权。之后永久免登录。</div>
+<div class="hint">浏览器自动弹出，扫码或输入密码授权。之后<b>永久免登录</b>，不用记密码。</div>
 <div class="step" style="margin-top:24px">第 3 步 · 直接用</div>
-<code>帮我创建一个腾讯会议，明天下午3点讨论Q2财报，通知 zhang@company.com</code>
+<code>帮我创建一个明天下午3点的腾讯会议，讨论Q2财报</code>
+<div class="hint">就像跟助理说话一样。建会后会自动问你要不要发邮件通知参会人。</div>
 </div>
+</div>
+
+<!-- 方式二：手动安装（适合开发者） -->
+<details style="max-width:660px;margin:0 auto">
+<summary style="cursor:pointer;font-size:15px;font-weight:600;color:var(--muted);padding:12px 0">或者手动安装（适合习惯命令行的用户）</summary>
+<div style="margin-top:12px;padding:20px;background:var(--warm);border-radius:var(--radius);font-size:14px;line-height:1.8">
+<p style="margin:0 0 12px"><b>前提条件</b>：电脑已安装 <a href="https://nodejs.org" target="_blank">Node.js</a>（版本 ≥ 16）。打开终端（Windows 按 Win+R 输入 cmd，Mac 搜索"终端"），逐行粘贴运行：</p>
+<code style="display:block;background:#11111b;color:#cdd6f4;padding:12px 16px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:13px"># 1. 安装腾讯会议命令行工具<br>npm install -g @tencentcloud/tmeet@v1.0.12</code>
+<code style="display:block;background:#11111b;color:#cdd6f4;padding:12px 16px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:13px"># 2. 下载并安装技能<br>npx https://github.com/ikevss/ikevss-tencentmeeting</code>
+<code style="display:block;background:#11111b;color:#cdd6f4;padding:12px 16px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:13px"># 3. 登录腾讯会议<br>tmeet auth login</code>
+<code style="display:block;background:#11111b;color:#cdd6f4;padding:12px 16px;border-radius:var(--radius-sm);font-size:13px"># 4. 重启 Claude Code 即可使用</code>
+<p style="margin:12px 0 0;color:var(--muted);font-size:13px">⚠️ 手动安装完成后需要<b>重启 Claude Code</b> 使技能生效。</p>
+</div>
+</details>
 </div>
 </section>
 
@@ -313,12 +337,14 @@ footer a{color:var(--muted)}
 <div class="section-head">
 <h2>你可能想问的</h2>
 </div>
-<div class="faq-grid">
-<div class="faq-item"><h4>企业账号能用吗？</h4><p>能。使用 OAuth2 浏览器授权，腾讯会议不区分个人/企业，只要账号能登录就能授权。</p></div>
-<div class="faq-item"><h4>登录超时怎么办？</h4><p>不要加 `--no-browser` 参数。让 CLI 自动弹出浏览器窗口，浏览器中有完整的登录和授权流程，不容易超时。</p></div>
-<div class="faq-item"><h4>发邮件需要额外装什么？</h4><p>需要 agently-cli（发邮件）和 react-email（生成精美邮件）。创建会议后如果选择发邀请，AI 会自动检查并引导安装。</p></div>
-<div class="faq-item"><h4>如何卸载？</h4><p>运行 `npm uninstall -g @tencentcloud/tmeet` 并删除 `~/.claude/skills/SKILL.md` 即可。</p></div>
-</div>
+	<div class="faq-grid">
+	<div class="faq-item"><h4>完全不懂命令行能用吗？</h4><p>能。推荐安装方式不需要你敲任何命令——直接对 Claude Code 说"帮我安装腾讯会议技能"就行，AI 会自动完成所有配置。</p></div>
+	<div class="faq-item"><h4>企业账号能用吗？</h4><p>能。使用 OAuth2 浏览器授权，腾讯会议不区分个人/企业，只要账号能登录就能授权。</p></div>
+	<div class="faq-item"><h4>安装后在哪用？</h4><p>在 <b>Claude Code</b> 对话窗口里直接用。跟它说"帮我建一个明天下午3点的会"，它就帮你创建。不需要打开腾讯会议客户端。</p></div>
+	<div class="faq-item"><h4>需要额外装什么软件吗？</h4><p>只需要 <b>Claude Code</b>（AI 编程助手）。发邮件通知需要 agently-cli（创建会议后 AI 会自动引导安装）。</p></div>
+	<div class="faq-item"><h4>登录超时怎么办？</h4><p>不要勾选"无浏览器模式"。让浏览器自动弹出，浏览器中有完整的登录和授权流程，不容易超时。</p></div>
+	<div class="faq-item"><h4>如何卸载？</h4><p>对 AI 说"帮我卸载腾讯会议技能"，或手动删除 <code>~/.claude/skills/SKILL.md</code> 文件。</p></div>
+	</div></div>
 </div>
 </section>
 
