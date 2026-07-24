@@ -26,6 +26,8 @@
   --accent-soft:#eff6ff;
   --green:#166534;
   --green-soft:#f0fdf4;
+  --red:#dc2626;
+  --red-soft:#fef2f2;
   --radius-sm:6px;
   --radius:12px;
   --radius-lg:20px;
@@ -63,14 +65,19 @@ nav .links a:hover{color:var(--ink)}
 .preview-box{background:var(--ink);border-radius:var(--radius-lg);padding:clamp(20px,4vw,32px);color:#cdd6f4;font-size:13px;box-shadow:0 24px 60px rgba(0,0,0,.18);width:100%;max-width:460px}
 .preview-box .line{display:flex;margin-bottom:6px;font-family:"JetBrains Mono",monospace}
 .preview-box .prompt{color:#89b4fa}
+.preview-box .info{color:#9399b2}
 .preview-box .result{color:#a6e3a1}
 .preview-box .info{color:#6c7086}
 .preview-box .cursor{display:inline-block;width:8px;height:15px;background:#f5c2e7;animation:blink 1s step-end infinite;vertical-align:-2px;margin-left:2px}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.cursor{animation:none}}
 .hero .stats{margin-top:48px;display:flex;gap:40px}
 .hero .stats div{font-size:14px;color:var(--muted)}
 .hero .stats b{display:block;font-size:clamp(22px,3vw,28px);color:var(--ink);font-weight:700;letter-spacing:-.02em}
+a:focus-visible,.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:var(--radius-sm)}
 @media(max-width:768px){
+  nav .links{overflow-x:auto;white-space:nowrap;gap:16px;-webkit-overflow-scrolling:touch}
+  nav .links a{font-size:12px}
   .hero .container{grid-template-columns:1fr;gap:48px}
   .hero .hero-right{order:-1}
   .hero .stats{flex-wrap:wrap;gap:20px}
@@ -93,7 +100,7 @@ section{padding:clamp(56px,10vh,96px) 0}
 .feat-card h4{font-size:17px;font-weight:700;margin-bottom:6px}
 .feat-card p{font-size:14px;line-height:1.65}
 .feat-card code{display:inline-block;margin-top:10px;padding:3px 10px;background:var(--warm);border-radius:var(--radius-sm);font-size:12px;color:var(--muted)}
-.comp-table{max-width:860px;margin:0 auto;border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;background:var(--surface)}
+.comp-table{max-width:860px;margin:0 auto;border:1px solid var(--line);border-radius:var(--radius-lg);overflow-x:auto;background:var(--surface)}
 .comp-table table{width:100%;border-collapse:collapse}
 .comp-table th{background:var(--warm);padding:14px 20px;font-size:13px;font-weight:700;text-align:left;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
 .comp-table td{padding:14px 20px;font-size:14px;border-top:1px solid var(--line)}
@@ -105,7 +112,7 @@ section{padding:clamp(56px,10vh,96px) 0}
 .install-box{max-width:560px;margin:0 auto;background:var(--ink);border-radius:var(--radius-lg);padding:clamp(24px,4vw,36px);box-shadow:0 20px 50px rgba(0,0,0,.12)}
 .install-box .step{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6c7086;margin-bottom:8px}
 .install-box code{display:block;background:#11111b;color:#cdd6f4;padding:16px 20px;border-radius:var(--radius);font-size:14px;margin-bottom:16px;border:1px solid #313244}
-.install-box .hint{font-size:13px;color:#585b70}
+.install-box .hint{font-size:13px;color:#a6adc8}
 .faq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:clamp(12px,2vw,20px)}
 .faq-item{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:clamp(20px,3vw,28px)}
 .faq-item h4{font-size:16px;font-weight:700;margin-bottom:8px}
@@ -118,8 +125,8 @@ footer a{color:var(--muted)}
 <body>
 <nav>
 <div class="container">
-<a href="/ikevss-tencentmeeting/" class="logo">
-<svg width="26" height="26" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#0066FF"/><text x="16" y="23" text-anchor="middle" font-size="18" font-weight="900" fill="#fff" font-family="Satoshi,sans-serif" letter-spacing="-1">MT</text></svg>
+<a href="/ikevss-tencentmeeting/" class="logo" aria-label="腾讯会议·邀约洞察 首页">
+<svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0066FF"/><text x="16" y="23" text-anchor="middle" font-size="18" font-weight="900" fill="#fff" font-family="Satoshi,sans-serif" letter-spacing="-1">MT</text></svg>
 腾讯会议·邀约洞察
 </a>
 <div class="links">
@@ -144,7 +151,7 @@ footer a{color:var(--muted)}
 <a href="https://github.com/ikevss/ikevss-tencentmeeting" class="btn btn-ghost">GitHub ↗</a>
 </div>
 <div class="stats">
-<div><b>四个环节</b> 建会→邀请→发送→复盘</div>
+<div><b>三个阶段</b> 建会→邀请→发送→复盘</div>
 <div><b>企业账号</b> 通用 OAuth2 授权</div>
 <div><b>会后自动</b> 生成可视化报告</div>
 </div>
@@ -183,9 +190,9 @@ footer a{color:var(--muted)}
 <p>发完邮件没人追踪，开会时才发现关键人没到</p>
 </div>
 <div class="pain-card">
-<div class="icon">😩</div>
-<h4>复盘成本高</h4>
-<p>听录音、扒纪要、做 PPT——一场 1 小时的会复盘要花 3 小时</p>
+<div class="icon">🎯</div>
+<h4>抓不住重点</h4>
+<p>会后记不住谁说了什么、该谁做什么——关键信息全散落在转写文本里</p>
 </div>
 <div class="pain-card">
 <div class="icon">😤</div>
@@ -198,9 +205,9 @@ footer a{color:var(--muted)}
 
 <section id="features">
 <div class="container">
-<div class="section-label">四个环节</div>
+<div class="section-label">三个阶段</div>
 <div class="section-head">
-<h2>一句话，四个环节自动串联</h2>
+<h2>一句话，三个阶段自动串联</h2>
 <p>你对 AI 说一句话，它帮你跑完全程。</p>
 </div>
 <div class="feat">
@@ -221,7 +228,7 @@ footer a{color:var(--muted)}
 <h4>📊 复盘洞察（核心差异化）</h4>
 <p><b>诚实分层</b>：[原文引用] > [转写] > [概括] > [推断]，每段标来源，推断标置信度。</p>
 <p><b>密度诚实</b>：信息少时视觉自动降级，不用精美图表包装空洞内容。</p>
-<p><b>18 种会议类型</b>：客户拜访（五维健康度）、决策复盘（决策树+盲区）、沟通复盘（七类盲点）、创意复盘（跨学科视角）、投资者关系、OKR、绩效面谈...</p>
+<p><b>17 种会议类型</b>：客户拜访（五维健康度）、决策复盘（决策树+盲区）、沟通复盘（七类盲点）、创意复盘（跨学科视角）、投资者关系、OKR、绩效面谈...</p>
 <p><b>跨会议追踪</b>：决策执行闭环 + 趋势对比 + 会议 ROI + 参与者贡献分析</p>
 <code>"帮我复盘上周的产品评审会"</code>
 </div>
@@ -245,10 +252,8 @@ footer a{color:var(--muted)}
 <tr><td>HTML 邀请函生成</td><td class="check">✅</td><td class="cross">❌</td></tr>
 <tr><td>邮件通知 + 日历附件</td><td class="check">✅</td><td class="cross">❌</td></tr>
 <tr><td>会后复盘报告</td><td class="check">✅</td><td class="cross">❌</td></tr>
-<tr><td>18 种会议类型识别</td><td class="check">✅</td><td class="cross">❌</td></tr>
-<tr><td>跨会议趋势追踪</td><td class="check">✅</td><td class="cross">❌</td></tr>
+<tr><td>17 种会议类型识别</td><td class="check">✅</td><td class="cross">❌</td></tr>
 <tr><td>通讯录搜索</td><td class="check">✅</td><td class="cross">❌</td></tr>
-<tr><td>会中控制（呼叫/踢人）</td><td class="check">✅</td><td class="cross">❌</td></tr>
 <tr><td>企业账号（OAuth2 通用）</td><td class="check">✅</td><td class="check">✅</td></tr>
 </tbody>
 </table>

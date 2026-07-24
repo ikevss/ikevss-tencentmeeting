@@ -1,2 +1,10 @@
 node_modules/
 package-lock.json
+docs/.tmp/
+.env
+.env.*
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log

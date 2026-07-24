@@ -49,7 +49,7 @@ triggers:
   - 会开了什么
 ---
 
-# 腾讯会议·邀约洞察 v2.2
+# 腾讯会议·邀约洞察 v2.2.5
 
 > 基于 `@tencentcloud/tmeet` v1.0.12 · OAuth2 授权 · 个人和企业账号通用 · 会前→会中→会后 全生命周期覆盖。
 
@@ -76,11 +76,11 @@ triggers:
 
 | 变量 | 来源 | 生命周期 |
 |------|------|---------| 
-| `meeting_id` | `tmeet meeting create` | 建会→邀请→复盘 |
+| `meeting_id` | `tmeet meeting create` | 建会→邀请→复盘（唯一标识） |
 | `meeting_code` | `tmeet meeting create` | 建会→邀请(ICS) |
 | `join_url` | `tmeet meeting create` | 建会→邀请(邮件) |
-| `record_file_id` | `tmeet record list` | 查录制→复盘 |
-| `ctk` | agently-cli 第一阶段 | 5分钟有效 |
+| `record_file_id` | `tmeet record list` | 查录制→复盘（一个 meeting_id 可有多条录制，需消歧） |
+| `ctk` | agently-cli 第一阶段 | 5分钟有效（约束）；两阶段之间传递 |
 | `organizer_email` | `agently-cli +me` | 会话内持久 |
 
 **上下文切换**：用户中途切换话题时保留已有变量，但明确告知当前流程状态。
@@ -144,6 +144,7 @@ triggers:
 > **加载契约**：首次发送前，必须 Read `email-invite-spec.md`（含 ICS 模板 + HTML/CSS + 两阶段确认）。
 
 **首次使用**：`npm install -g @tencent-qqmail/agently-cli@2.1.0` → `npm i react-email@3.0.7` → `agently-cli auth login` → `agently-cli +me` 获取邮箱
+> **注意**：react-email 版本以本安装命令（v3.0.7）为准，package.json 中的依赖仅用于 install.js 环境检测。
 
 **每次发送**：
 1. 询问收件人邮箱（上下文已有则跳过）
@@ -174,32 +175,46 @@ triggers:
 6. 问"需要邮件发给参会人吗？" → 可回阶段 2
 7. 系列会议建议"需要和上次做趋势对比吗？"
 
-**会议类型路由**：
+**会议类型路由**（按优先级从高到低匹配，命中即停）：
 
-| 关键词 | 类型 | 核心洞察 |
-|--------|------|---------|
-| 站会/sync/每日 | Daily Standup | 阻塞项 + 风险升级 |
-| 周会/双周 | Weekly Sync | 议题覆盖 + 决策效率 |
-| 复盘/retro/review | Retrospective | 对比趋势 + 效率评分 |
-| 启动/kickoff | Kickoff | 目标对齐 + 责任矩阵 |
-| 1:1/双人 | One-on-One | 反馈质量 + 跟进 |
-| 战略/年度 | Strategic | SWOT + 资源分配 |
-| 客户/路演/pitch | Client | 诉求 + 异议 + 成交信号 |
-| 跟进/CRM | Follow-up | 行动项完成率 + 客户状态 |
-| 投资人/IR | Investor Relations | Q&A + 技术展望 |
-| 客户/回访/续约 | Customer Success | 五维健康度 + 流失风险 |
-| 决策/评审/拍板 | Decision Review | 决策类型/依据/盲区 |
-| 一对一/沟通 | Communication | 七类沟通盲点 |
-| 脑暴/创意 | Creative | 跨学科视角 + 创作方向 |
-| 对齐/里程碑 | Alignment | 依赖项 + 责任边界 |
-| OKR/KR/季度 | OKR Review | 完成度 + 偏差归因 |
-| 绩效/考核/晋升 | Performance | 目标差距 + 改进计划 |
-| 无特定词 | General | 效率评分 + 改进建议 |
+| 优先级 | 关键词 | 类型 | 核心洞察 |
+|--------|--------|------|---------|
+| 1 | 决策/评审/拍板/选型 | Decision Review | 决策类型/依据/盲区 |
+| 2 | 投资人/IR/募资 | Investor Relations | Q&A + 技术展望 |
+| 3 | 回访/续约/增购 | Customer Success | 五维健康度 + 流失风险 |
+| 4 | 站会/sync/每日 | Daily Standup | 阻塞项 + 风险升级 |
+| 5 | 周会/双周/weekly | Weekly Sync | 议题覆盖 + 决策效率 |
+| 6 | 复盘/retro/review | Retrospective | 对比趋势 + 效率评分 |
+| 7 | 启动/kickoff | Kickoff | 目标对齐 + 责任矩阵 |
+| 8 | 战略/年度 | Strategic | SWOT + 资源分配 |
+| 9 | 跟进/CRM/pipeline | Follow-up | 行动项完成率 + 客户状态 |
+| 10 | 绩效/考核/晋升/转正 | Performance | 目标差距 + 改进计划 |
+| 11 | OKR/KR/季度 | OKR Review | 完成度 + 偏差归因 |
+| 12 | 对齐/里程碑/跨部门 | Alignment | 依赖项 + 责任边界 |
+| 13 | 脑暴/创意/发散/探索 | Creative | 跨学科视角 + 创作方向 |
+| 14 | 沟通/反馈/辅导 | Communication | 七类沟通盲点 |
+| 15 | 1:1/一对一/双人 | One-on-One | 反馈质量 + 跟进 |
+| 16 | 客户/路演/pitch | Client | 诉求 + 异议 + 成交信号 |
+| 17 | 无特定词 | General | 效率评分 + 改进建议 |
+
+> **消歧义规则**：①优先按高优先级命中 ②"路演+投资人/IR"→优先级2，"路演+客户/pitch"→优先级16 ③"客户+回访/续约"→优先级3，"客户+路演/pitch"→优先级16 ④"沟通/反馈+一对一"→优先级14 ⑤AI 存疑时主动问用户选类型。
 
 **边界处理**：
 - 场景不明 → 让用户选类型
 - 用户说"不用" → 回复"好的，需要帮助随时说"并结束
 - 转写 >10K字 → 提示聚焦某一议题
+
+### 未实现触发器处理
+
+以下触发器在 frontmatter 中声明但**暂无独立 CLI 命令覆盖**（tmeet CLI 当前不支持或命令未文档化），AI 遇到时应用相近命令降级：
+
+| 触发词 | 降级方案 |
+|--------|---------|
+| 修改会议 | 引导用户手动修改，或使用 `tmeet meeting update --help` 查看可用参数 |
+| 录制下载 | 用 `tmeet record list` 列出录制信息，告知用户当前 CLI 暂不直接支持下载，需前往腾讯会议客户端下载 |
+| 等候室 | 用 `tmeet meeting create --help` 查看等候室相关参数，或引导用户在客户端设置 |
+| 踢人 | 会议进行中时告知 `tmeet control kick --help` 查看参数（仅会议进行中可用） |
+| 导出日志 | 使用 `tmeet tshoot feedback` 提交反馈，或引导用户在客户端导出日志 |
 
 ---
 
@@ -208,10 +223,12 @@ triggers:
 | 场景 | 示例 | 命令 |
 |------|------|------|
 | 创建 | "建一个明天下午3点的会" | `tmeet meeting create --subject ... --start ... --end ...` |
-| 周期会议 | "每周一早上周会" | 同上 + `--meeting-type 1 --recurring-type 2` |
+| 周期会议 | "每周一早上周会" | 同上 + `--meeting-type 1 --recurring-type 2` (`--meeting-type`: 0=普通 1=周期；`--recurring-type`: 1=每天 2=每周 3=每两周 4=每月) |
+| 修改会议 | "把明天的会改成后天下午3点" | `tmeet meeting update --meeting-id ... --start ... --end ...` |
 | 查列表 | "我最近有哪些会" | `tmeet meeting list` |
 | 取消 | "取消明天的会" | `tmeet meeting cancel --meeting-id ...` |
-| 查录制 | "上次路演的录制" | `tmeet record list` → `smart-minutes` |
+| 查录制 | "上次路演的录制" | `tmeet record list` → `smart-minutes` / `transcript-get` |
+| 下载录制 | "下载上次路演视频" | `tmeet record list` → 告知用户需在腾讯会议客户端下载 |
 | 查参会人 | "这场会谁来了" | `tmeet report participants --meeting-id ...` |
 | 搜通讯录 | "搜投资者关系的人" | `tmeet contact search --keyword ...` |
 | 复盘 | "帮我复盘上次路演" | `record list` → `transcript-get` → HTML 报告 |
@@ -245,7 +262,8 @@ triggers:
 | tmeet 未安装/未登录/过期 | `npm install -g @tencentcloud/tmeet@v1.0.12` / `tmeet auth login` |
 | SSH 无浏览器 | `tmeet auth login --no-browser` |
 | agently-cli 失败 | 输出会议信息让用户手动通知 |
-| npm 卡住（>3分钟）| 询问是否重试 |
+| npm 卡住（>3分钟）| 询问用户是否重试或跳过 |
+| OAuth2 令牌过期/被撤销 | 提示 `tmeet auth status` 验证，如需则重新 `tmeet auth login` |
 | 录制无转写 | `smart-minutes` 用智能纪要替代 |
 | 转写过长（>10K字）| 提示聚焦某一议题 |
 | 分页数据 | `--page-token` 获取下一页 |
@@ -254,10 +272,14 @@ triggers:
 
 ## 安全说明
 
-- AES-256-GCM 加密存储，明文不落盘
-- OAuth2 授权，密码不暴露给 CLI
-- HTTPS 加密传输
-- `tmeet auth logout` 随时清除凭证
+- tmeet CLI 凭证使用 AES-256-GCM 加密存储（据官方文档），密码不暴露给 CLI
+- OAuth2 浏览器授权，`--no-browser` 模式输出的授权 URL 含一次性授权码，授权后立即清除终端
+- `ctk` 确认令牌通过命令行参数传递，会记录到 shell history，5 分钟后自动过期
+- `organizer_email` 等敏感变量存在于 AI 对话上下文中，对话转录请勿公开分享
+- `docs/.tmp/` 中的文件（邮件 HTML/ICS/复盘报告）含会议敏感信息，已加入 `.gitignore` 防止误提交
+- HTTPS 加密传输所有 API 通信
+- `tmeet auth logout` 随时清除本地凭证
+- **输入净化**：所有用户提供的字符串（会议主题/收件人邮箱）拼入 shell 命令前需做基本转义——邮箱验证格式，特殊字符用引号包裹
 
 ---
 

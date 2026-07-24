@@ -31,10 +31,13 @@
 | 用途 | 路径 |
 |------|------|
 | **独立包目录** | `E:\AIwork\mimocode\ikevss-tencentmeeting\` |
-| **Skill 文件** | `ikevss-tencentmeeting/ikevss-tencentmeeting.md` |
-| **安装脚本** | `ikevss-tencentmeeting/install.js` |
-| **README（GitHub 展示）** | `ikevss-tencentmeeting/README.md` |
-| **打包文件** | `ikevss-tencentmeeting-v1.1.tar.gz` |
+| **Skill 主文件** | `SKILL.md` |
+| **安装脚本** | `install.js` |
+| **README（GitHub 展示）** | `README.md` |
+| **邮件邀请规范** | `email-invite-spec.md` |
+| **复盘渲染规范** | `insight-rendering.md` |
+| **复盘示例** | `insight-examples.md` |
+| **打包文件** | `ikevss-tencentmeeting-v2.2.5.zip` |
 | **交接文档** | `HANDOVER.md`（本文件） |
 
 ---
@@ -47,12 +50,12 @@
 |---|------|---------|-----------|
 | 1 | 🔐 OAuth2 授权 | `tmeet auth login` | "帮我登录腾讯会议" |
 | 2 | 📅 创建会议 | `tmeet meeting create` | "帮我创建一个腾讯会议，明天下午3点" |
-| 3 | 📅 周期性会议 | `tmeet meeting create --recurring` | "创建每周例会，每周一上午10点" |
+| 3 | 📅 周期性会议 | `tmeet meeting create --meeting-type 1 --recurring-type 2` | "创建每周例会，每周一上午10点" |
 | 4 | 📅 查询/取消会议 | `tmeet meeting list/cancel` | "查我的会议列表" / "取消明天的会" |
 | 5 | 🎬 录制管理 | `tmeet record list` | "查上次路演的录制" |
-| 6 | 🎬 转写+纪要 | `tmeet record transcript/summary` | "把转写文本给我" / "会议要点是什么" |
-| 7 | 📊 参会报告 | `tmeet meeting attendees` | "查这场会有谁参加" |
-| 8 | 👥 通讯录 | `tmeet contacts search` | "搜索投资者关系部门的人" |
+| 6 | 🎬 转写+纪要 | `tmeet record transcript-get / smart-minutes` | "把转写文本给我" / "会议要点是什么" |
+| 7 | 📊 参会报告 | `tmeet report participants --meeting-id ...` | "查这场会有谁参加" |
+| 8 | 👥 通讯录 | `tmeet contact search --keyword ...` | "搜索投资者关系部门的人" |
 
 ---
 
@@ -109,7 +112,7 @@
 继续 ikevss-tencentmeeting 腾讯会议独立技能。
 
 当前状态：
-- v1.2 已就绪：30 条 CLI 子命令全覆盖 + 邮件邀请（HTML + ICS 日程）
+- v2.2.5 已就绪：复盘洞察核心差异化定位 + 诚实分层 + 密度诚实 + 17种会议类型专属分析
 - 已在 SuperIR 项目中拆分出来，完全独立
 - 本机已安装 tmeet v1.0.12 并已授权登录
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// 腾讯会议 Skill 独立安装包 v1.0 — ikevss-tencentmeeting
+// 腾讯会议 Skill 独立安装包 v2.2.5 — ikevss-tencentmeeting
 // 安装 tmeet CLI + Skill 文件到 Claude Code 全局环境
 // 用法: node install.js
 // 兼容: Windows / macOS / Linux
@@ -57,12 +57,12 @@ try {
 title('Step 3/3: 安装 Skill 到 Claude Code');
 mkdirSync(SKILLS_DIR, { recursive: true });
 
-const skillFile = join(__dirname, 'ikevss-tencentmeeting.md');
+const skillFile = join(__dirname, 'SKILL.md');
 if (existsSync(skillFile)) {
   copyFileSync(skillFile, join(SKILLS_DIR, 'ikevss-tencentmeeting.md'));
   ok('Skill 文件已安装到 ' + SKILLS_DIR);
 } else {
-  warn('Skill 文件缺失，跳过');
+  warn('SKILL.md 缺失，跳过');
 }
 
 // ====== 完成 ======

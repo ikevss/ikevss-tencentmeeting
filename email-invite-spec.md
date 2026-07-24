@@ -112,6 +112,7 @@ agently-cli message +send \
 1. 第一阶段拿 ctk 后**必须停下等用户回复**
 2. **绝不**自己确认自己
 3. ctk 5 分钟有效 → 超时后**必须重新走第一阶段**（旧 ctk 不可复用）
+4. **输入净化**：收件人邮箱必须验证格式 `/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/`，多收件人用逗号分隔后逐个验证
 
 ---
 
@@ -124,6 +125,7 @@ agently-cli message +send \
 | 2 | 参数不合规 | 不重试，按 error.message 改参数 |
 | 3 | 授权失效 | 重新 `agently-cli auth login` |
 | 4 | 本地网络 | 最多重试 2 次 |
+| 5 | 预留 | — |
 | 6 | 业务拒收 | 不重试，反馈用户 |
 | 7 | 限频 | 等 Retry-After 后重试 |
 | 8 | 缺 confirmation-token | 走两阶段确认 |
@@ -137,3 +139,43 @@ agently-cli message +send \
 | npm install | 3 分钟 | 询问用户是否重试或跳过 |
 | agently-cli auth login | 5 分钟 | 提示"授权未完成，可稍后重试" |
 | agently-cli 发送 | 2 分钟 | 按 exit code 1/4 处理（最多重试 2 次） |
+
+---
+
+## 邮件 HTML 骨架（最小模板）
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#f6f9fc;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f6f9fc;">
+<tr><td align="center" style="padding:32px 16px;">
+<!-- 主容器：max-width 600px 居中 -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#fff;border-radius:12px;border-top:3px solid #0066FF;">
+<!-- 顶栏 -->
+<tr><td style="padding:24px 28px;background:#0066FF;border-radius:12px 12px 0 0;">
+  <p style="margin:0;color:#fff;font-size:20px;font-weight:700;">{{meeting_subject}}</p>
+  <p style="margin:8px 0 0;color:rgba(255,255,255,.8);font-size:14px;">{{meeting_date}} · {{meeting_time}}</p>
+</td></tr>
+<!-- 会议详情 -->
+<tr><td style="padding:24px 28px;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+  <tr><td style="padding:10px 0;color:#1f2937;font-size:14px;border-bottom:1px solid #e5e7eb;">会议号</td><td style="padding:10px 0;font-weight:600;font-size:16px;border-bottom:1px solid #e5e7eb;">{{meeting_code}}</td></tr>
+  <tr><td style="padding:10px 0;color:#1f2937;font-size:14px;border-bottom:1px solid #e5e7eb;">入会方式</td><td style="padding:10px 0;border-bottom:1px solid #e5e7eb;"><a href="{{join_url}}" style="color:#0066FF;font-size:14px;">点击加入会议</a></td></tr>
+  </table>
+</td></tr>
+<!-- CTA -->
+<tr><td style="padding:0 28px 24px;">
+  <a href="{{join_url}}" style="display:inline-block;padding:12px 32px;background:#0066FF;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px;">一键加入会议</a>
+</td></tr>
+<!-- 底部 -->
+<tr><td style="padding:16px 28px;background:#f6f9fc;border-radius:0 0 12px 12px;color:#78716c;font-size:12px;">
+  📎 邮件附件中包含 .ics 日历文件，双击即可添加到 Outlook / Apple Mail / Google 日历，会议开始前自动提醒。
+</td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>
+```
