@@ -131,7 +131,11 @@ npx skills add ikevss/ikevss-tencentmeeting
 
 安装后重启你的 AI 工具。
 
-> **不需要手动装 tmeet** — 首次使用时 AI 会自动检测并安装 `@tencentcloud/tmeet`。你只需对 AI 说"帮我登录腾讯会议"完成首次授权（30 秒），之后就能用了。
+> **建议提前安装依赖**（可选）：首次使用时 AI 会自动检测并安装 `@tencentcloud/tmeet`，但为了更快上手，可以先手动装好：
+> ```bash
+> npm install -g @tencentcloud/tmeet@v1.0.12
+> ```
+> 装完后对 AI 说"帮我登录腾讯会议"完成首次授权（30 秒），之后就能用了。
 
 ### 开始使用
 
