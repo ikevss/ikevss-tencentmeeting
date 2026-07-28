@@ -8,3 +8,7 @@ docs/.tmp/
 .DS_Store
 Thumbs.db
 *.log
+.agents/
+agent/
+.claude/
+skills-lock.json
