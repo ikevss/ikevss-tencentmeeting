@@ -107,10 +107,26 @@
 ### 🔐 企业账号通用
 - OAuth2 浏览器授权，不区分个人/企业
 - 凭证 AES-256-GCM 加密存储
+- 无需手动获取 Token，企业账号直接扫码登录
 
 ---
 
-## 和腾讯官方 MCP 的区别
+## 安装
+
+```bash
+# 一行命令安装
+npx skills add ikevss/ikevss-tencentmeeting
+```
+
+安装后 **重启 Claude Code** 使技能生效。
+
+> **不需要手动装 tmeet** — 首次使用 skill 时，AI 会自动检测并安装 `@tencentcloud/tmeet`。你只需要对 AI 说"帮我登录腾讯会议"完成首次授权（30 秒，只需一次），之后就能直接用了。
+
+### 开始使用
+
+```
+帮我创建一个腾讯会议，明天下午3点讨论Q2财报，时长1小时
+```
 
 | | 腾讯会议·邀约洞察 | 腾讯官方 MCP |
 |---|---|---|
@@ -126,15 +142,11 @@
 ### 1. 安装
 
 ```bash
-# 方式一：一键安装（推荐）
-node install.js
-
-# 方式二：手动安装
-npm install -g @tencentcloud/tmeet@v1.0.12
-cp SKILL.md ~/.claude/skills/
+# 一行命令安装
+npx skills add ikevss/ikevss-tencentmeeting
 ```
 
-安装后 **重启 Claude Code**。
+安装后 **重启 Claude Code**。首次使用时 skill 会自动检测并安装所需工具（tmeet CLI 等）。
 
 ### 2. 登录（30 秒，只需一次）
 
