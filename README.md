@@ -113,14 +113,25 @@
 
 ## 安装
 
+支持 Claude Code、Cursor、Codex、Windsurf、GitHub Copilot、Gemini CLI 等 20+ AI 编程工具。
+
+### 方式一：发给 AI（推荐）
+
+把下面这段话复制发给你的 AI 编程助手：
+
+```
+Read https://ikevss.github.io/ikevss-tencentmeeting/SKILL.md and follow the instructions to install 腾讯会议·邀约洞察 on my machine. Install any required dependencies, then verify the installation.
+```
+
+### 方式二：命令行
+
 ```bash
-# 一行命令安装
 npx skills add ikevss/ikevss-tencentmeeting
 ```
 
-安装后 **重启 Claude Code** 使技能生效。
+安装后重启你的 AI 工具。
 
-> **不需要手动装 tmeet** — 首次使用 skill 时，AI 会自动检测并安装 `@tencentcloud/tmeet`。你只需要对 AI 说"帮我登录腾讯会议"完成首次授权（30 秒，只需一次），之后就能直接用了。
+> **不需要手动装 tmeet** — 首次使用时 AI 会自动检测并安装 `@tencentcloud/tmeet`。你只需对 AI 说"帮我登录腾讯会议"完成首次授权（30 秒），之后就能用了。
 
 ### 开始使用
 
@@ -128,39 +139,16 @@ npx skills add ikevss/ikevss-tencentmeeting
 帮我创建一个腾讯会议，明天下午3点讨论Q2财报，时长1小时
 ```
 
+---
+
+## 和腾讯官方 MCP 的区别
+
 | | 腾讯会议·邀约洞察 | 腾讯官方 MCP |
 |---|---|---|
 | 企业账号 | ✅ 能用 | ❌ 拿不到 Token |
 | 邮件通知 | ✅ 精美邀请函 + 日历 | ❌ |
 | 会后复盘 | ✅ 可视化报告 | ❌ |
 | 通讯录搜索 | ✅ | ❌ |
-
----
-
-## 快速开始
-
-### 1. 安装
-
-```bash
-# 一行命令安装
-npx skills add ikevss/ikevss-tencentmeeting
-```
-
-安装后 **重启 Claude Code**。首次使用时 skill 会自动检测并安装所需工具（tmeet CLI 等）。
-
-### 2. 登录（30 秒，只需一次）
-
-```
-帮我登录腾讯会议
-```
-
-浏览器自动弹出，登录并授权。之后永久免登录。
-
-### 3. 开始使用
-
-```
-帮我创建一个腾讯会议，明天下午3点讨论Q2财报，时长1小时
-```
 
 ---
 
