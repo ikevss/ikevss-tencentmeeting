@@ -22,20 +22,15 @@ triggers:
   - 约个会
   - 会议列表
   - 取消会议
-  - 修改会议
   - 周期性会议
   - 每周例会
   - 双周会
   - 查询录制
-  - 录制下载
   - 转写搜索
   - 参会报告
   - 参会人
-  - 等候室
   - 通讯录
   - 邀请人
-  - 踢人
-  - 导出日志
   - 会议邀请
   - 发邮件通知
   - 发送邀请
@@ -129,9 +124,9 @@ triggers:
 ### [阶段 1] 创建会议
 - **入口守卫**：通过前置检查（tmeet auth status 已登录）
 
-- 0. tmeet 未装 → `npm install -g @tencentcloud/tmeet@v1.0.12`
-- 1. 确认参数（主题/时间/时长） → `tmeet meeting create` → 记录 `meeting_code, join_url, meeting_id`
-- 2. 🆕 主动问："需要给参会人发邮件邀请吗？精美响应式邀请函 + 日历附件"
+0. tmeet 未装 → `npm install -g @tencentcloud/tmeet@v1.0.12`
+1. 确认参数（主题/时间/时长） → `tmeet meeting create` → 记录 `meeting_code, join_url, meeting_id`
+2. 🆕 主动问："需要给参会人发邮件邀请吗？精美响应式邀请函 + 日历附件"
 
 **会议冲突检测**：建会前先查 `tmeet meeting list`，检测时间重叠，有冲突则提示用户确认。
 
@@ -143,7 +138,6 @@ triggers:
 > **加载契约**：首次发送前，必须 Read `email-invite-spec.md`（含 ICS 模板 + HTML/CSS + 两阶段确认）。
 
 **首次使用**：`npm install -g @tencent-qqmail/agently-cli@2.1.0` → `npm i react-email@3.0.7` → `agently-cli auth login` → `agently-cli +me` 获取邮箱
-> **注意**：react-email 版本以本安装命令（v3.0.7）为准，package.json 中的依赖仅用于 install.js 环境检测。
 
 **每次发送**：
 1. 询问收件人邮箱（上下文已有则跳过）
@@ -168,10 +162,10 @@ triggers:
 **复盘流程**：
 1. `tmeet record list` → 确认 `record-file-id`
 2. **并行拉取**（同时执行）：`transcript-get` + `smart-minutes` + `participants`
-3. Phase A 内容画像 → ⏸ 等用户确认
+3. Phase A 内容画像 → 🛑 等用户确认
 4. Phase B 布局规划 → Phase C 智能渲染 → `docs/.tmp/复盘报告-{meeting_id}-{日期}.html`
 5. `start ""` 浏览器预览
-6. 问"需要邮件发给参会人吗？" → 可回阶段 2
+6. 主动问"需要邮件发给参会人吗？" → 可回阶段 2
 7. 系列会议建议"需要和上次做趋势对比吗？"
 
 **会议类型路由**（按优先级从高到低匹配，命中即停）：
@@ -205,14 +199,14 @@ triggers:
 
 ### 未实现触发器处理
 
-以下触发器在 frontmatter 中声明但**暂无独立 CLI 命令覆盖**（tmeet CLI 当前不支持或命令未文档化），AI 遇到时应用相近命令降级：
+以下 5 个触发词在早期版本的 frontmatter 中曾声明，但 tmeet CLI 当前版本不直接支持独立操作，AI 遇到时按降级方案处理：
 
 | 触发词 | 降级方案 |
 |--------|---------|
-| 修改会议 | 引导用户手动修改，或使用 `tmeet meeting update --help` 查看可用参数 |
+| 修改会议 | 使用 `tmeet meeting update --meeting-id ... --start ... --end ...` |
 | 录制下载 | 用 `tmeet record list` 列出录制信息，告知用户当前 CLI 暂不直接支持下载，需前往腾讯会议客户端下载 |
 | 等候室 | 用 `tmeet meeting create --help` 查看等候室相关参数，或引导用户在客户端设置 |
-| 踢人 | 会议进行中时告知 `tmeet control kick --help` 查看参数（仅会议进行中可用） |
+| 踢人 | 会议进行中时使用 `tmeet control kick`（仅会议进行中可用） |
 | 导出日志 | 使用 `tmeet tshoot feedback` 提交反馈，或引导用户在客户端导出日志 |
 
 ---
@@ -292,10 +286,10 @@ triggers:
 
 ## 后续升级
 
-- 决策执行追踪闭环（下次同类会议自动回顾）
-- 通讯录→邮箱自动映射
-- 会议 ROI 计算（成本 vs 产出）
-- 复盘趋势追踪（多次同类型会议对比）
+- 决策执行追踪闭环（下次同类会议自动回顾上次未完成的 action items）
+- 通讯录→邮箱自动映射（说"通知张三"自动从通讯录查出邮箱）
+- 会议 ROI 计算（人时×时长 vs 决策产出加权评分）
+- 复盘趋势追踪（多次同类型会议对比决策质量/效率变化曲线）
 
 ---
 
