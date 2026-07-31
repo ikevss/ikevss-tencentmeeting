@@ -120,7 +120,7 @@
 把下面这段话复制发给你的 AI 编程助手：
 
 ```
-Read https://ikevss.github.io/ikevss-tencentmeeting/SKILL.md and follow the instructions to install 腾讯会议·邀约洞察 on my machine. Install any required dependencies, then verify the installation.
+Read https://raw.githubusercontent.com/ikevss/ikevss-tencentmeeting/master/SKILL.md and follow the instructions to install 腾讯会议·邀约洞察 on my machine. Install any required dependencies, then verify the installation.
 ```
 
 ### 方式二：命令行
