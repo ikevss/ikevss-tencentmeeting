@@ -1,47 +1,14 @@
 ---
 name: ikevss-tencentmeeting
-version: "2.2.5"
 description: >
   腾讯会议·邀约洞察 — 覆盖会议全生命周期：建会、生成邀请函、发送邮件通知、会后复盘洞察（基于转写原文生成可视化 HTML 报告）。
   个人和企业账号通用（OAuth2 授权）。
   NOT for 企业微信会议、Zoom、Teams、飞书会议；实时转写分析；会议室硬件管理。
-author: 花生ss (github.com/ikevss)
-url: https://github.com/ikevss/ikevss-tencentmeeting
-triggers:
-  - 腾讯会议
-  - 会议录制
-  - 转写
-  - 腾讯会议纪要
-  - 会议纪要
-  - 智能纪要
-  - tencent meeting
-  - 创建会议
-  - 建一个会议
-  - 预约会议
-  - 开会
-  - 约个会
-  - 会议列表
-  - 取消会议
-  - 周期性会议
-  - 每周例会
-  - 双周会
-  - 查询录制
-  - 转写搜索
-  - 参会报告
-  - 参会人
-  - 通讯录
-  - 邀请人
-  - 会议邀请
-  - 发邮件通知
-  - 发送邀请
-  - 邮件邀请
-  - 通知参会人
-  - 复盘
-  - 分析这场会
-  - 会议复盘
-  - 会后总结
-  - 回顾会议
-  - 会开了什么
+metadata:
+  author: 花生ss (github.com/ikevss)
+  version: "2.2.5"
+  url: https://github.com/ikevss/ikevss-tencentmeeting
+compatibility: Designed for Claude Code (or similar products). Requires Node.js >= 16, @tencentcloud/tmeet, network access.
 ---
 
 # 腾讯会议·邀约洞察 v2.2.5
