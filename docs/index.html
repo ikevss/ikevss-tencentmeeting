@@ -146,8 +146,8 @@ footer a{color:var(--muted)}
 <h1>从建会到复盘<br>一个对话框<mark>全搞定</mark></h1>
 	<p class="hero-desc">建会不用打开客户端，复盘不用听录音——对着 AI 说句话就能走完全程。支持 20+ AI 编程工具。</p>
 <div class="cta">
-	<a href="#install" class="btn btn-primary">🤖 我是 Agent · 安装</a>
-	<a href="#install-human" class="btn btn-ghost">🖥️ 我是 Human · 安装</a>
+	<a href="#install" class="btn btn-primary">📋 命令行安装</a>
+	<a href="#install-prompt" class="btn btn-ghost">💬 提示词安装</a>
 </div>
 <div class="stats">
 <div><b>三个阶段</b> 建会→邀请→发送→复盘</div>
@@ -299,44 +299,42 @@ footer a{color:var(--muted)}
 
 <div style="max-width:720px;margin:0 auto">
 
-<!-- Agent 方式 -->
+<!-- 命令行方式 -->
 <div style="display:flex;gap:16px;align-items:flex-start;padding:clamp(20px,3vw,28px);background:var(--accent-soft);border:1px solid #bfdbfe;border-radius:var(--radius-lg);margin-bottom:20px">
-<div style="flex-shrink:0;display:flex;align-items:center;justify-content:center;width:40px;height:40px;background:var(--accent);border-radius:50%;color:#fff;font-size:18px">🤖</div>
+<div style="flex-shrink:0;display:flex;align-items:center;justify-content:center;width:40px;height:40px;background:var(--accent);border-radius:50%;color:#fff;font-size:18px">📋</div>
 <div style="flex:1;min-width:0">
-<h4 style="font-size:16px;font-weight:700;margin:0 0 4px">我是 Agent</h4>
-<p style="font-size:13px;color:var(--muted);margin:0 0 12px">把这段话发给你的 AI 编程助手，它会自动完成安装和配置。</p>
-<div style="position:relative">
-<code style="display:block;background:#fff;color:var(--ink);padding:14px 18px;border-radius:var(--radius);font-size:14px;line-height:1.7;border:1px solid var(--line)">Read <b>https://raw.githubusercontent.com/ikevss/ikevss-tencentmeeting/master/SKILL.md</b> and follow the instructions to install <b>腾讯会议·邀约洞察</b> on my machine. Install any required dependencies, then verify the installation.</code>
-<button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)" style="position:absolute;top:6px;right:6px;background:var(--warm);border:1px solid var(--line);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:var(--muted)" onmousedown="this.textContent='已复制';setTimeout(()=>this.textContent='复制',1500)">复制</button>
-</div>
-</div>
-</div>
-
-<!-- Human 方式 -->
-<div id="install-human" style="display:flex;gap:16px;align-items:flex-start;padding:clamp(20px,3vw,28px);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg)">
-<div style="flex-shrink:0;display:flex;align-items:center;justify-content:center;width:40px;height:40px;background:var(--ink);border-radius:50%;color:#fff;font-size:18px">🖥️</div>
-<div style="flex:1;min-width:0">
-<h4 style="font-size:16px;font-weight:700;margin:0 0 4px">我是 Human</h4>
-<p style="font-size:13px;color:var(--muted);margin:0 0 12px">在终端执行以下命令，手动安装。</p>
+<h4 style="font-size:16px;font-weight:700;margin:0 0 4px">📋 命令行安装</h4>
+<p style="font-size:13px;color:var(--muted);margin:0 0 12px">打开终端，粘贴下面这行命令，回车。</p>
 <div style="position:relative;margin-bottom:12px">
-<div class="step" style="font-size:13px;font-weight:600;margin-bottom:4px">1. 通过 skills CLI 安装</div>
 <code style="display:block;background:#11111b;color:#cdd6f4;padding:14px 18px;border-radius:var(--radius);font-size:14px">npx skills add ikevss/ikevss-tencentmeeting</code>
 <button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)" style="position:absolute;top:6px;right:6px;background:#313244;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:#cdd6f4" onmousedown="this.textContent='已复制';setTimeout(()=>this.textContent='复制',1500)">复制</button>
 </div>
 <div style="margin-bottom:12px">
-<div class="step" style="font-size:13px;font-weight:600;margin-bottom:4px">2. （可选）提前安装依赖，首次使用更快</div>
+<div style="font-size:13px;font-weight:600;margin-bottom:4px">（可选）提前装好，首次使用更快：</div>
 <code style="display:block;background:#11111b;color:#cdd6f4;padding:14px 18px;border-radius:var(--radius);font-size:14px">npm install -g @tencentcloud/tmeet</code>
 <button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)" style="position:absolute;top:6px;right:6px;background:#313244;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:#cdd6f4" onmousedown="this.textContent='已复制';setTimeout(()=>this.textContent='复制',1500)">复制</button>
-<p style="margin:6px 0 0;color:var(--muted);font-size:12px">不装也可以——首次使用时 AI 会自动安装，只是会多等几十秒。</p>
+<p style="margin:6px 0 0;color:var(--muted);font-size:12px">不装也行——首次使用时 AI 会自动装，只是多等几十秒。</p>
 </div>
-<div style="margin-bottom:12px">
-<div class="step" style="font-size:13px;font-weight:600;margin-bottom:4px">3. 重启你的 AI 工具</div>
+<p style="margin:6px 0 0;color:var(--muted);font-size:13px">安装后<b>重启 AI 工具</b>，然后对 AI 说「帮我登录腾讯会议」完成授权（30 秒），之后就能用了。</p>
 </div>
-<div>
-<div class="step" style="font-size:13px;font-weight:600;margin-bottom:4px">4. 首次使用：对 AI 说</div>
-<code style="display:block;background:#11111b;color:#cdd6f4;padding:14px 18px;border-radius:var(--radius);font-size:14px">帮我登录腾讯会议</code>
 </div>
-<p style="margin:14px 0 0;color:var(--muted);font-size:13px">不需要手动安装 tmeet —— 首次使用时 AI 会自动检测并装好所需工具。</p>
+
+<!-- 提示词方式 -->
+<div id="install-prompt" style="display:flex;gap:16px;align-items:flex-start;padding:clamp(20px,3vw,28px);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg)">
+<div style="flex-shrink:0;display:flex;align-items:center;justify-content:center;width:40px;height:40px;background:var(--ink);border-radius:50%;color:#fff;font-size:18px">💬</div>
+<div style="flex:1;min-width:0">
+<h4 style="font-size:16px;font-weight:700;margin:0 0 4px">💬 提示词安装</h4>
+<p style="font-size:13px;color:var(--muted);margin:0 0 12px">不想敲命令？复制下面这句话，直接发给你的 AI 编程助手就行。</p>
+<div style="position:relative">
+<code style="display:block;background:#fff;color:var(--ink);padding:14px 18px;border-radius:var(--radius);font-size:14px;line-height:1.7;border:1px solid var(--line)">帮我安装腾讯会议技能 <b>ikevss/ikevss-tencentmeeting</b>，装好所有依赖，然后帮我登录腾讯会议。</code>
+<button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)" style="position:absolute;top:6px;right:6px;background:var(--warm);border:1px solid var(--line);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:var(--muted)" onmousedown="this.textContent='已复制';setTimeout(()=>this.textContent='复制',1500)">复制</button>
+</div>
+<p style="margin:10px 0 0;color:var(--muted);font-size:13px">AI 会自动从 GitHub 下载技能、安装依赖、完成配置，你等它说"好了"就行。</p>
+</div>
+</div>
+<p style="font-size:13px;color:var(--muted);margin:0 0 12px">复制下面这段话，发给你的 AI 编程助手，它会自动装好一切。</p>
+<div style="position:relative">
+<code style="display:block;background:#fff;color:var(--ink);padding:14px 18px;border-radius:var(--radius);font-size:14px;line-height:1.7;border:1px solid var(--line)">帮我安装腾讯会议技能 <b>ikevss/ikevss-tencentmeeting</b>，并装好所需的全部依赖。</code>
 </div>
 </div>
 </div>

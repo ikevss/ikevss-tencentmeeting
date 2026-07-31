@@ -115,27 +115,23 @@
 
 支持 Claude Code、Cursor、Codex、Windsurf、GitHub Copilot、Gemini CLI 等 20+ AI 编程工具。
 
-### 方式一：发给 AI（推荐）
-
-把下面这段话复制发给你的 AI 编程助手：
-
-```
-Read https://raw.githubusercontent.com/ikevss/ikevss-tencentmeeting/master/SKILL.md and follow the instructions to install 腾讯会议·邀约洞察 on my machine. Install any required dependencies, then verify the installation.
-```
-
-### 方式二：命令行
+### 方式一：命令行
 
 ```bash
 npx skills add ikevss/ikevss-tencentmeeting
 ```
 
-安装后重启你的 AI 工具。
+装完重启 AI 工具。然后对 AI 说"帮我登录腾讯会议"完成首次授权（30 秒）。
 
-> **建议提前安装依赖**（可选）：首次使用时 AI 会自动检测并安装 `@tencentcloud/tmeet`，但为了更快上手，可以先手动装好：
-> ```bash
-> npm install -g @tencentcloud/tmeet
-> ```
-> 装完后对 AI 说"帮我登录腾讯会议"完成首次授权（30 秒），之后就能用了。
+> **可选**：提前 `npm install -g @tencentcloud/tmeet` 能让首次使用更快，不装 AI 也会自动装。
+
+### 方式二：发给 AI（推荐新手）
+
+不想敲命令？把下面这句话发给你的 AI 编程助手，它会自动搞定一切：
+
+```
+帮我安装腾讯会议技能 ikevss/ikevss-tencentmeeting，装好所有依赖，然后帮我登录腾讯会议。
+```
 
 ### 开始使用
 
