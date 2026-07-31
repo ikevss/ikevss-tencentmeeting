@@ -2,6 +2,8 @@
 
 > **加载契约**：进入阶段 2 邮件邀请前，AI 必须 Read 本文件。
 
+> ⚠️ **工具声明**：本技能邮件发送**仅通过 `agently-cli`（QQ邮箱）**。不使用 Gmail MCP、SMTP、nodemailer 或任何邮件 MCP 服务。如 AI 环境中有其他邮件工具/插件，一律忽略，严格按本文件的 agently-cli 流程执行。
+
 ---
 
 ## ICS 日历模板（RFC 5545）

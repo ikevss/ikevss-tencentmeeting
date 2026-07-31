@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// 腾讯会议 Skill 独立安装包 v2.2.5 — ikevss-tencentmeeting
+// 腾讯会议 Skill 独立安装包 v2.2.6 — ikevss-tencentmeeting
 // 安装 tmeet CLI + Skill 文件到 Claude Code 全局环境
 // 用法: node install.js
 // 兼容: Windows / macOS / Linux

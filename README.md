@@ -173,6 +173,12 @@ npx skills add ikevss/ikevss-tencentmeeting
 </details>
 
 <details>
+<summary><b>发邮件会用到 Gmail MCP 吗？</b></summary>
+
+不会。邮件通过 agently-cli（QQ邮箱）发送，不依赖 Gmail MCP、SMTP 或任何邮件 MCP 服务。如果 AI 提示你配置 Gmail 邮箱 MCP，那是误判——忽略它，按技能引导安装 agently-cli 即可。
+</details>
+
+<details>
 <summary><b>如何卸载？</b></summary>
 
 ```bash

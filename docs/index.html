@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>腾讯会议·邀约洞察 v2.2.5 — 从建会到复盘，一个对话框走完全程</title>
-<meta name="description" content="v2.2.5: 腾讯会议·邀约洞察 — 让 AI 编程助手帮你创建和管理腾讯会议。诚实分层防AI幻觉、密度诚实原则、17种会议类型专属分析、跨会议追踪。支持 Claude Code/Cursor/Codex 等 20+ 工具。企业账号通用。">
-<meta property="og:title" content="腾讯会议·邀约洞察 v2.2.5">
+<title>腾讯会议·邀约洞察 v2.2.6 — 从建会到复盘，一个对话框走完全程</title>
+<meta name="description" content="v2.2.6: 腾讯会议·邀约洞察 — 让 AI 编程助手帮你创建和管理腾讯会议。诚实分层防AI幻觉、密度诚实原则、17种会议类型专属分析、跨会议追踪。支持 Claude Code/Cursor/Codex 等 20+ 工具。企业账号通用。">
+<meta property="og:title" content="腾讯会议·邀约洞察 v2.2.6">
 <meta property="og:description" content="从建会到复盘，一个对话框走完全程。">
 <meta property="og:url" content="https://ikevss.github.io/ikevss-tencentmeeting/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -142,7 +142,7 @@ footer a{color:var(--muted)}
 <section class="hero">
 <div class="container">
 <div class="hero-left">
-	<div class="hero-tag">v2.2.5 · 支持 20+ AI 编程工具 · 腾讯会议全生命周期</div>
+	<div class="hero-tag">v2.2.6 · 支持 20+ AI 编程工具 · 腾讯会议全生命周期</div>
 <h1>从建会到复盘<br>一个对话框<mark>全搞定</mark></h1>
 	<p class="hero-desc">建会不用打开客户端，复盘不用听录音——对着 AI 说句话就能走完全程。支持 20+ AI 编程工具。</p>
 <div class="cta">
@@ -209,11 +209,11 @@ footer a{color:var(--muted)}
 </section>
 
 <!-- 安装入口 -->
-<section id="install" style="padding:0 0 clamp(56px,10vh,96px)">
+<section id="install-entry" style="padding:0 0 clamp(56px,10vh,96px)">
 <div class="container">
 <div style="max-width:720px;margin:0 auto">
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-<a href="#install-cmd" style="display:block;padding:28px 32px;background:var(--accent-soft);border:1px solid #bfdbfe;border-radius:var(--radius-lg);text-decoration:none">
+<a href="#install" style="display:block;padding:28px 32px;background:var(--accent-soft);border:1px solid #bfdbfe;border-radius:var(--radius-lg);text-decoration:none">
 <div style="font-size:28px;margin-bottom:8px">📋</div>
 <h4 style="font-size:17px;font-weight:700;margin:0 0 4px;color:var(--ink)">命令行安装</h4>
 <p style="font-size:13px;color:var(--muted);margin:0">在终端粘贴 npx skills add 命令，回车即可</p>
@@ -308,6 +308,8 @@ footer a{color:var(--muted)}
 </div>
 </div>
 </div>
+</div>
+</section>
 
 <section id="compare">
 <div class="container">
@@ -395,6 +397,7 @@ footer a{color:var(--muted)}
 	<div class="faq-item"><h4>安装后在哪用？</h4><p>在 AI 编程工具（Claude Code/Cursor/Codex 等）对话窗口里直接用。跟它说"帮我建一个明天下午3点的会"就行，不需要打开腾讯会议客户端。</p></div>
 	<div class="faq-item"><h4>需要额外装什么软件吗？</h4><p>只需要 <b>AI 编程工具</b>（Claude Code / Cursor / Codex 等）。发邮件通知需要 agently-cli（创建会议后 AI 会自动引导安装）。</p></div>
 	<div class="faq-item"><h4>登录超时怎么办？</h4><p>不要勾选"无浏览器模式"。让浏览器自动弹出，浏览器中有完整的登录和授权流程，不容易超时。</p></div>
+	<div class="faq-item"><h4>发邮件会用到 Gmail MCP 吗？</h4><p>不会。邮件通过 agently-cli（QQ邮箱）发送，不依赖 Gmail MCP、SMTP 或任何邮件 MCP 服务。如果 AI 提示你配置 Gmail 邮箱 MCP，那是误判——忽略它，按技能引导安装 agently-cli 即可。</p></div>
 	<div class="faq-item"><h4>如何卸载？</h4><p>对 AI 说"帮我卸载腾讯会议技能"，或手动删除 <code>~/.claude/skills/SKILL.md</code> 文件。</p></div>
 	</div></div>
 </div>

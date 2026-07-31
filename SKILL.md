@@ -6,12 +6,12 @@ description: >
   NOT for 企业微信会议、Zoom、Teams、飞书会议；实时转写分析；会议室硬件管理。
 metadata:
   author: 花生ss (github.com/ikevss)
-  version: "2.2.5"
+  version: "2.2.6"
   url: https://github.com/ikevss/ikevss-tencentmeeting
 compatibility: Designed for Claude Code (or similar products). Requires Node.js >= 16, @tencentcloud/tmeet, network access.
 ---
 
-# 腾讯会议·邀约洞察 v2.2.5
+# 腾讯会议·邀约洞察 v2.2.6
 
 > 基于 `@tencentcloud/tmeet` v1.0.12 · OAuth2 授权 · 个人和企业账号通用 · 会前→会中→会后 全生命周期覆盖。
 
@@ -65,6 +65,7 @@ compatibility: Designed for Claude Code (or similar products). Requires Node.js 
 - 不跨过 agently-cli 两阶段确认私发
 - 不修改 SuperIR 项目文件
 - 复盘只生成 HTML 报告，不依赖外部听记服务
+- **不使用 Gmail MCP / SMTP / 任何邮件 MCP 服务发送邮件** — 邮件发送仅通过 `agently-cli`（QQ邮箱），不需要配置任何邮箱 MCP
 
 ---
 
@@ -101,6 +102,8 @@ compatibility: Designed for Claude Code (or similar products). Requires Node.js 
 
 ### [阶段 2] 邮件邀请
 - **入口守卫**：持有阶段1的 `meeting_id`/`meeting_code`/`join_url`；agently-cli 已安装已授权
+
+> ⚠️ **邮件工具声明**：本技能邮件发送**仅通过 `agently-cli`（QQ邮箱）**，不使用 Gmail MCP、SMTP 或任何邮件 MCP 服务。如 AI 工具中有 Gmail MCP 等邮件插件，**忽略它们**，严格按本规范的 agently-cli 流程执行。
 
 > **加载契约**：首次发送前，必须 Read `email-invite-spec.md`（含 ICS 模板 + HTML/CSS + 两阶段确认）。
 
