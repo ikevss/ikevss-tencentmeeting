@@ -170,6 +170,64 @@ footer a{color:var(--muted)}
 </div>
 </section>
 
+<!-- 三步动画演示 -->
+<section style="padding:0 0 clamp(40px,8vh,64px)">
+<div class="container">
+<div style="max-width:720px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;text-align:center">
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+<svg viewBox="0 0 80 80" style="width:64px;height:64px">
+<circle cx="40" cy="40" r="36" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="226" stroke-dashoffset="226" stroke-linecap="round">
+<animate attributeName="stroke-dashoffset" from="226" to="0" dur="1.2s" fill="freeze"/>
+</circle>
+<text x="40" y="46" text-anchor="middle" font-size="24">💬</text>
+</svg>
+<p style="font-size:14px;font-weight:600;margin:0;color:var(--ink)">说一句话建会</p>
+<p style="font-size:12px;color:var(--muted);margin:0">不用打开客户端</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+<svg viewBox="0 0 80 80" style="width:64px;height:64px">
+<circle cx="40" cy="40" r="36" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="226" stroke-dashoffset="226" stroke-linecap="round">
+<animate attributeName="stroke-dashoffset" from="226" to="0" dur="1.2s" begin="0.4s" fill="freeze"/>
+</circle>
+<text x="40" y="46" text-anchor="middle" font-size="24">📧</text>
+</svg>
+<p style="font-size:14px;font-weight:600;margin:0;color:var(--ink)">自动生成邀请函</p>
+<p style="font-size:12px;color:var(--muted);margin:0">邮件+日历一键发送</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+<svg viewBox="0 0 80 80" style="width:64px;height:64px">
+<circle cx="40" cy="40" r="36" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="226" stroke-dashoffset="226" stroke-linecap="round">
+<animate attributeName="stroke-dashoffset" from="226" to="0" dur="1.2s" begin="0.8s" fill="freeze"/>
+</circle>
+<text x="40" y="46" text-anchor="middle" font-size="24">📊</text>
+</svg>
+<p style="font-size:14px;font-weight:600;margin:0;color:var(--ink)">会后智能复盘</p>
+<p style="font-size:12px;color:var(--muted);margin:0">可视化HTML报告</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 安装入口 -->
+<section id="install" style="padding:0 0 clamp(56px,10vh,96px)">
+<div class="container">
+<div style="max-width:720px;margin:0 auto">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+<a href="#install-cmd" style="display:block;padding:28px 32px;background:var(--accent-soft);border:1px solid #bfdbfe;border-radius:var(--radius-lg);text-decoration:none">
+<div style="font-size:28px;margin-bottom:8px">📋</div>
+<h4 style="font-size:17px;font-weight:700;margin:0 0 4px;color:var(--ink)">命令行安装</h4>
+<p style="font-size:13px;color:var(--muted);margin:0">在终端粘贴 npx skills add 命令，回车即可</p>
+</a>
+<a href="#install-prompt" style="display:block;padding:28px 32px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);text-decoration:none">
+<div style="font-size:28px;margin-bottom:8px">💬</div>
+<h4 style="font-size:17px;font-weight:700;margin:0 0 4px;color:var(--ink)">提示词安装</h4>
+<p style="font-size:13px;color:var(--muted);margin:0">复制中文提示词发给 AI，自动安装配置</p>
+</a>
+</div>
+</div>
+</div>
+</section>
+
 <section id="pain">
 <div class="container">
 <div class="section-label">你的痛点</div>
