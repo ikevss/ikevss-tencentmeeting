@@ -326,7 +326,7 @@ footer a{color:var(--muted)}
 <h4 style="font-size:16px;font-weight:700;margin:0 0 4px">💬 提示词安装</h4>
 <p style="font-size:13px;color:var(--muted);margin:0 0 12px">不想敲命令？复制下面这句话，直接发给你的 AI 编程助手就行。</p>
 <div style="position:relative">
-<code style="display:block;background:#fff;color:var(--ink);padding:14px 18px;border-radius:var(--radius);font-size:14px;line-height:1.7;border:1px solid var(--line)">帮我安装腾讯会议技能 <b>ikevss/ikevss-tencentmeeting</b>，装好所有依赖，然后帮我登录腾讯会议。</code>
+<code style="display:block;background:#fff;color:var(--ink);padding:14px 18px;border-radius:var(--radius);font-size:14px;line-height:1.7;border:1px solid var(--line)">帮我安装腾讯会议技能。先运行 <b>npm install -g @tencentcloud/tmeet</b>，然后运行 <b>npx skills add ikevss/ikevss-tencentmeeting</b>。装完后帮我登录腾讯会议。</code>
 <button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)" style="position:absolute;top:6px;right:6px;background:var(--warm);border:1px solid var(--line);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:var(--muted)" onmousedown="this.textContent='已复制';setTimeout(()=>this.textContent='复制',1500)">复制</button>
 </div>
 <p style="margin:10px 0 0;color:var(--muted);font-size:13px">AI 会自动从 GitHub 下载技能、安装依赖、完成配置，你等它说"好了"就行。</p>

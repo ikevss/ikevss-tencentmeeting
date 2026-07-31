@@ -130,7 +130,7 @@ npx skills add ikevss/ikevss-tencentmeeting
 不想敲命令？把下面这句话发给你的 AI 编程助手，它会自动搞定一切：
 
 ```
-帮我安装腾讯会议技能 ikevss/ikevss-tencentmeeting，装好所有依赖，然后帮我登录腾讯会议。
+帮我安装腾讯会议技能。先运行 npm install -g @tencentcloud/tmeet，然后运行 npx skills add ikevss/ikevss-tencentmeeting。装完后帮我登录腾讯会议。
 ```
 
 ### 开始使用
