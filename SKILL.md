@@ -1,9 +1,6 @@
 ---
 name: ikevss-tencentmeeting
-description: >
-  腾讯会议·邀约洞察 — 覆盖会议全生命周期：建会、生成邀请函、发送邮件通知、会后复盘洞察（基于转写原文生成可视化 HTML 报告）。
-  个人和企业账号通用（OAuth2 授权）。
-  NOT for 企业微信会议、Zoom、Teams、飞书会议；实时转写分析；会议室硬件管理。
+description: 腾讯会议·邀约洞察 — 覆盖会议全生命周期：建会、生成邀请函、发送邮件通知、会后复盘洞察（基于转写原文生成可视化 HTML 报告）。个人和企业账号通用（OAuth2 授权）。NOT for 企业微信会议、Zoom、Teams、飞书会议；实时转写分析；会议室硬件管理。
 metadata:
   author: 花生ss (github.com/ikevss)
   version: "2.2.6"
