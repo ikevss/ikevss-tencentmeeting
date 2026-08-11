@@ -213,3 +213,9 @@ MIT License
 ## 作者
 
 **花生ss** — [github.com/ikevss/ikevss-tencentmeeting](https://github.com/ikevss/ikevss-tencentmeeting)
+
+---
+
+## 联系
+
+📮 联系邮箱：ihuass@agent.qq.com
